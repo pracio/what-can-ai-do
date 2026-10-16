@@ -37,7 +37,7 @@ function stars(n: number) {
     </style>
   </head>
   <body>
-    <a class="back" href={`${import.meta.env.BASE_URL}/`}>← 返回所有任务</a>
+    <a class="back" href={`${(import.meta.env.BASE_URL ?? '/').replace(/\/$/, '')}/`}>← 返回所有任务</a>
     <article>
       <Content />
     </article>
