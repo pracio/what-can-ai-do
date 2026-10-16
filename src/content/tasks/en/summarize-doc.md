@@ -31,7 +31,7 @@ indicesText:
 
 # Boil down long documents
 
-**What it does**: Hand AI a long PDF — a lease, an insurance policy, a school district letter, a 40-page report — and get the key points back in a couple of minutes, with every number and date pulled out separately so you don't have to hunt for them.
+**What it does**: Hand AI a long PDF (a lease, an insurance policy, a school district letter, a 40-page report) and get the key points back in a couple of minutes, with every number and date pulled out separately so you don't have to hunt for them.
 **How long**: 2 minutes. **Does it cost money**: No.
 
 | Effort | Setup | Risk |
@@ -51,15 +51,15 @@ indicesText:
 
 ### Why the "list every number" trick matters
 
-Ask only for a summary and AI tends to smooth over specifics — the exact rent increase, the deadline, the dollar amount. Asking for numbers and dates as a separate list forces it to surface them. That's usually where the real content of a document lives: what changes, by how much, starting when.
+Ask only for a summary and AI tends to smooth over specifics: the exact rent increase, the deadline, the dollar amount. Asking for numbers and dates as a separate list forces it to surface them. That's usually where the real content of a document lives: what changes, by how much, starting when.
 
 ### Watch out
 
-- **AI summarizes, it doesn't certify.** For anything with legal or financial consequences — signing, paying, deadline decisions — use the summary to decide *what to read closely*, not to skip reading
+- **AI summarizes, it doesn't certify.** For anything with legal or financial consequences (signing, paying, deadline decisions), use the summary to decide *what to read closely*, not to skip reading
 - **Scanned documents**: if the pages are photos of paper, results get worse with bad lighting or small handwriting. Flip through what it returns against the page count; a "2-page" answer on a 30-page file means the upload failed
 - **Very long documents** (100+ pages) may hit file size limits. Split the file or summarize chapter by chapter
 
 ---
 
-*Last tested: pending — this walkthrough was prepared from the products' documented capabilities and has not yet been verified step-by-step by a real person. If you try it (whether it works or not), [tell us on GitHub](https://github.com/pracio/what-can-ai-do/issues).*
+*Last tested: pending. This walkthrough was prepared from the products' documented capabilities and has not yet been verified step-by-step by a real person. If you try it (whether it works or not), [tell us on GitHub](https://github.com/pracio/what-can-ai-do/issues).*
 

@@ -314,7 +314,18 @@ const cards = tasks
     }
     .arrow:hover { background: var(--glass-strong); color: var(--ink); }
     .arrow.l { left: 26px; } .arrow.r { right: 26px; }
-    @media (hover: none), (max-width: 720px) { .arrow { display: none; } }
+    @media (hover: none), (max-width: 720px) { .arrow { display: none; } 
+      /* portrait overflow guard: EN/zh-Hant titles wrap taller than zh-Hans; keep head and
+         the steps card from colliding when content exceeds the slide (large system fonts) */
+      .slide { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      .slide::before { content: ''; margin: auto 0; }      /* top spacer keeps centering when short */
+      .slide::after  { content: ''; margin: auto 0; }      /* bottom spacer balances flex-start */
+      .slide { justify-content: flex-start; }
+      .head { flex-shrink: 0; }
+      .steps, .indices-line, .open { flex-shrink: 0; }
+      .title { font-size: clamp(24px, 6.2vw, 34px); }
+      .head { gap: 14px; }
+}
 
     @media (prefers-reduced-motion: reduce) {
       .slide { transition: opacity .2s; transform: none !important; }

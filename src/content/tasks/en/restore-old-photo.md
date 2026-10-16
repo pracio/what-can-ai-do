@@ -36,7 +36,7 @@ indicesText:
 
 | Effort | Setup | Risk |
 |---|---|---|
-| ★★★★☆ One paste away | ★☆☆☆☆ Just need the ChatGPT app | ★☆☆☆☆ Photos get uploaded — skip anything sensitive |
+| ★★★★☆ One paste away | ★☆☆☆☆ Just need the ChatGPT app | ★☆☆☆☆ Photos get uploaded, so skip anything sensitive |
 
 ## How to do it
 
@@ -47,19 +47,19 @@ indicesText:
 
 > Restore this old photo: improve sharpness, repair damage and fading, and colorize it if it's black and white. Keep every facial feature exactly the same.
 
-3. Wait about 30 seconds. Not happy with it? Just say what to change — "make the faces sharper", "warmer colors" — and it'll try again
+3. Wait about 30 seconds. Not happy with it? Just say what to change ("make the faces sharper", "warmer colors") and it'll try again
 
 ### Tips that actually matter
 
-- **Paper photos**: prop them on a plain surface near a window, shoot straight down. A glass frame will glare — take the photo out if you can
+- **Paper photos**: prop them on a plain surface near a window, shoot straight down. A glass frame will glare, so take the photo out if you can
 - **Group photos**: restore the whole shot first, then ask it to zoom in on one person if needed
 - **Badly damaged photos** (torn, water-stained): it still works, but expect softer results around the damaged areas. It fills in gaps by guessing, so compare faces carefully against the original
 
 ### Watch out
 
 - The AI fills in missing details by making its best guess. For one-of-a-kind family photos, keep the original file untouched and treat the restored version as a copy
-- Results vary between apps. If ChatGPT's version looks off, try the same prompt in Gemini — they fail differently
+- Results vary between apps. If ChatGPT's version looks off, try the same prompt in Gemini; they fail differently
 
 ---
 
-*Last tested: pending — this walkthrough was prepared from the products' documented capabilities and has not yet been verified step-by-step by a real person. If you try it (whether it works or not), [tell us on GitHub](https://github.com/pracio/what-can-ai-do/issues).*
+*Last tested: pending. This walkthrough was prepared from the products' documented capabilities and has not yet been verified step-by-step by a real person. If you try it (whether it works or not), [tell us on GitHub](https://github.com/pracio/what-can-ai-do/issues).*
