@@ -12,7 +12,7 @@
  *   6. 无横向滚动: scrollWidth ≤ viewport宽
  *   7. CTA链接可达: 完整教程href在本地站点内且200
  */
-const { chromium } = require('playwright');
+const { chromium } = require(process.env.PW_PATH || 'playwright');
 
 const BASE = process.argv[2] || 'http://localhost:4321';
 const VIEWPORTS = [
