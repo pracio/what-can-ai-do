@@ -1,0 +1,55 @@
+---
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const tasks = await getCollection('tasks');
+  return tasks.map((task) => ({
+    params: { slug: task.id.replace(/\.md$/, '') },
+    props: { task },
+  }));
+}
+
+const { task } = Astro.props;
+const { Content } = await render(task);
+
+const IND_NAMES = { prompt: '一句话指数', hassle: '折腾指数', risk: '风险指数' };
+function stars(n: number) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+---
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{task.data.task_id} — What Can AI Do?</title>
+    <style is:global>
+      body { max-width: 680px; margin: 0 auto; padding: 20px; font-family: system-ui, sans-serif; line-height: 1.75; color: #1a1a1a; }
+      table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+      th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 0.92em; }
+      th { background: #f6f6f6; }
+      blockquote { border-left: 4px solid #4a90d9; background: #f0f6ff; margin: 10px 0; padding: 10px 14px; border-radius: 4px; }
+      blockquote p { margin: 0; }
+      h1 { font-size: 1.5em; } h2 { font-size: 1.2em; margin-top: 1.6em; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+      h3 { font-size: 1.05em; }
+      code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+      .badge { background: #fff3cd; padding: 2px 8px; border-radius: 10px; font-size: 0.85em; }
+      a.back { font-size: 0.9em; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <a class="back" href={`${import.meta.env.BASE_URL}/`}>← 返回所有任务</a>
+    <article>
+      <Content />
+    </article>
+    <hr style="margin-top: 3em; border: none; border-top: 1px solid #eee;" />
+    <p style="font-size: 0.85em; color: #888;">
+      指数说明：一句话指数=你要对 AI 说多少话才能达到理想效果；折腾指数=搭环境要装多少东西；风险指数=搞砸了有多大代价。
+      {task.data.last_tested && task.data.last_tested !== 'pending' && (
+        <span>最后实测：{task.data.last_tested}</span>
+      )}
+      {(!task.data.last_tested || task.data.last_tested === 'pending') && (
+        <span class="badge">路径待真机验证</span>
+      )}
+    </p>
+  </body>
+</html>
