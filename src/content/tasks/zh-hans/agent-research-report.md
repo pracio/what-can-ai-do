@@ -9,6 +9,24 @@ domains: [办公]
 type: agent
 last_tested: pending
 related: [summarize-doc]
+title: "AI 能替你去调研"
+tagline: "它自己查几十个来源，给你一份报告"
+accent: "#34d399"
+accent2: "#a7f3d0"
+icon: agent-research-report
+order: 16
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} → 新建对话选「深度思考」"
+  - n: "2"
+    text: "把这段话发给 AI（换主题）："
+    prompt: "帮我调研「我想买的手机」：先拆解成 3-5 个关键问题，逐个上网查证，最后给我一份报告——结论放最前，中间列不同来源的说法和分歧，结尾注明信息时效。"
+  - n: "3"
+    text: "追问它：「这个结论来源可靠吗」"
+indicesText:
+  prompt: "说 2 句"
+  hassle: "等 10 分钟"
+  risk: "关键决策要核对"
 ---
 
 # 让 AI 自己去调研，给你一份报告

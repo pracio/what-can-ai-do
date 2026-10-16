@@ -9,6 +9,24 @@ domains: [风险]
 type: chat
 last_tested: pending
 related: [explain-contract, stock-caution]
+title: "AI 能帮你识破诈骗"
+tagline: "可疑消息截图发它，帮你找破绽"
+accent: "#f87171"
+accent2: "#fca5a5"
+icon: spot-scam
+order: 19
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，可疑消息截图+这段话："
+    prompt: "我收到一条可疑消息/电话，请帮我分析：1) 有哪些常见的诈骗特征？2) 这条信息里有几处疑点？3) 如果是诈骗，下一步对方通常会怎么引导？4) 我该怎么核实真伪？"
+  - n: "2"
+    text: "冒充熟人的语音视频，追问「AI换脸的破绽」"
+  - n: "3"
+    text: "AI说是真的也要回拨官方核实"
+indicesText:
+  prompt: "截图+1句"
+  hassle: "随手可用"
+  risk: "最终靠人核实"
 ---
 
 # 让 AI 帮你识破 AI 诈骗

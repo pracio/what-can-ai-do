@@ -1,235 +1,11 @@
 ---
+import { TASK_ICONS } from '../icons/task-icons';
 import { getCollection } from 'astro:content';
 
 const tasks = (await getCollection('tasks')).sort((a, b) => a.id.localeCompare(b.id));
 
 // 每case: SVG图标 + accent色 + 三步速览(看一眼就知道怎么做) + 单行指数
-const meta: Record<string, {
-  title: string; tagline: string; icon: string; accent: string; accent2: string;
-  steps: {n: string; text: string}[];
-  indices: {prompt: string; hassle: string; risk: string};
-}> = {
-  'restore-old-photo': {
-    title: 'AI 能修复老照片', tagline: '泛黄模糊 → 清晰彩色，5 分钟',
-    accent: '#fbbf24', accent2: '#fde68a',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.9-3.9a2 2 0 0 0-2.8 0L6 19"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 图片，选一张老照片' },
-      { n: '2', text: '把这段话发给 AI：', prompt: '修复这张老照片：提高清晰度、修复破损和褪色，如果是黑白照片就上色。保持人物面部特征完全不变。' },
-      { n: '3', text: '等 30 秒，不满意就追加要求' },
-    ],
-    indices: { prompt: 1, promptText: '说 1 句', hassle: 1, hassleText: '零安装', risk: 1, riskText: '几乎无' },
-  },
-  'summarize-doc': {
-    title: 'AI 能把长文档读薄', tagline: '几十页 → 10 条要点，2 分钟',
-    accent: '#60a5fa', accent2: '#93c5fd',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 文件，选中文档' },
-      { n: '2', text: '把这段话发给 AI：', prompt: '总结这份文档：用 10 条以内的要点讲清楚它说了什么。最后单独列出：文档里的数字、日期、金额，一共有哪些。' },
-      { n: '3', text: '太浅或太深，换一句话重问' },
-    ],
-    indices: { prompt: 1, promptText: '说 1 句', hassle: 1, hassleText: '零安装', risk: 1, riskText: '几乎无' },
-  },
-  'agent-research-report': {
-    title: 'AI 能替你去调研', tagline: '它自己查几十个来源，给你一份报告',
-    accent: '#34d399', accent2: '#a7f3d0',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} → 新建对话选「深度思考」' },
-      { n: '2', text: '把这段话发给 AI（换主题）：', prompt: '帮我调研「我想买的手机」：先拆解成 3-5 个关键问题，逐个上网查证，最后给我一份报告——结论放最前，中间列不同来源的说法和分歧，结尾注明信息时效。' },
-      { n: '3', text: '追问它：「这个结论来源可靠吗」' },
-    ],
-    indices: { prompt: 2, promptText: '说 2 句', hassle: 2, hassleText: '等 10 分钟', risk: 2, riskText: '关键决策要核对' },
-  },
-  'agent-organize-photos': {
-    title: 'AI 能整理你的照片', tagline: '电脑上的 AI 员工，批量分类你只审批',
-    accent: '#a78bfa', accent2: '#ddd6fe',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="m9.5 13.5 2 2 3.5-4"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}} <a href="https://www.workbuddy.cn/" target="_blank" rel="noopener" class="web-link">下载安装 WorkBuddy</a>（免费）' },
-      { n: '2', text: '打开后选择你存照片的文件夹，把这段话发给它：', prompt: '这个文件夹里的照片和截图很乱。帮我分类：旅游风景、人物合影、截图、文件收据、其他。分好类整理成子文件夹，给我一份清单：每类数量、时间范围、建议保留还是删。动手前先告诉我你打算怎么分。' },
-      { n: '3', text: '它动手前会找你确认，看过方案再放行，「建议删」的自己过目' },
-    ],
-    indices: { prompt: 2, promptText: '说 2 句', hassle: 3, hassleText: '要先装软件', risk: 2, riskText: '删除要自己确认' },
-  },
-  'ai-health-consult': {
-    title: 'AI 能帮你读懂体检报告', tagline: '看懂体检报告，就诊前不慌',
-    accent: '#ff6b6b', accent2: '#ff9a8b',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.2A4.8 4.8 0 0 0 12 6.8 4.8 4.8 0 0 0 2 8.8c0 2 1.5 3.7 3 5.2l7 7z"/><path d="M3.5 12h4l1.5-3 2 5 1.5-2.5h4"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}} → 拍体检报告（先涂掉姓名身份证）' },
-      { n: '2', text: '把这段话发给 AI：', prompt: '用大白话解释这份体检报告里的每个指标：哪些正常、哪些偏高偏低、各自可能意味着什么。不需要开药，只要帮我听懂医生会说什么。' },
-      { n: '3', text: '拿不准的项，记下来问医生' },
-    ],
-    indices: { prompt: 2, promptText: '追问几句', hassle: 1, hassleText: '零安装', risk: 4, riskText: '别替代就医' },
-  },
-  'tutoring-kids': {
-    title: 'AI 能辅导孩子作业', tagline: 'AI 只引导不报答案，孩子自己想',
-    accent: '#34d399', accent2: '#6ee7b7',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话定规矩：', prompt: '你在辅导小学生作业时不要直接给答案。我发给你一道题，你要：1) 先问我孩子卡在哪一步；2) 给一个类似但数字不同的例题，带孩子走一遍思路；3) 让孩子自己做原题；4) 孩子做错了再提示，每次只提示一小步。现在第一题是：' },
-      { n: '2', text: '拍照发题目，让 AI 反问孩子卡在哪' },
-      { n: '3', text: '孩子自己做完，错了 AI 每次只提示一小步' },
-    ],
-    indices: { prompt: 3, promptText: '定规矩 1 次', hassle: 1, hassleText: '零安装', risk: 2, riskText: '别直接报答案' },
-  },
-  'explain-contract': {
-    title: 'AI 能讲透合同账单', tagline: '大白话讲透，不利条款标出来',
-    accent: '#a78bfa', accent2: '#c4b5fd',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话：', prompt: '我发你一份合同/账单。请你：1) 用大白话讲清楚这份文件的核心内容，像讲给完全不懂的朋友听；2) 单独列出对我不利的条款或费用，用「需要注意」标出来；3) 指出写得含糊、值得问对方的地方。我不是法律专业人士，别用术语堆砌。' },
-      { n: '2', text: '拍照发合同（多页拍全，小字分开拍）' },
-      { n: '3', text: '对着「需要注意」清单逐条问对方或查证' },
-    ],
-    indices: { prompt: 3, promptText: '说 1 句', hassle: 1, hassleText: '拍照就行', risk: 3, riskText: '它不是律师' },
-  },
-  'make-poster': {
-    title: 'AI 能做出一张海报', tagline: '说清需求先出方案，两轮能用',
-    accent: '#fb7185', accent2: '#fda4af',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你的）：', prompt: '帮我设计一张海报，主题：{生日聚会/店庆促销/社团招新}。要求：竖版手机屏幕比例，主色调用{暖橙色}，风格{简约/可爱/正式}。请先给我 2 个不同的布局方案（描述每个方案：标题放哪、配图风格、信息层级），我选一个后你再生成图片。' },
-      { n: '2', text: '选一个方案，或说「方案一，标题再大点」' },
-      { n: '3', text: '出图后逐字检查（AI 中文偶尔错字），满意长按保存' },
-    ],
-    indices: { prompt: 4, promptText: '说清 4 件事', hassle: 1, hassleText: '零安装', risk: 1, riskText: '几乎无' },
-  },
-  'travel-plan': {
-    title: 'AI 能定制旅行行程', tagline: '按你家节奏排，不是网红攻略',
-    accent: '#38bdf8', accent2: '#7dd3fc',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你的）：', prompt: '帮我规划一个行程：{目的地}，{N}天，{几月去}，同行有{老人/孩子/朋友}，预算人均{金额}（不含大交通）。要求：1) 每天不超过 3 个主要地点，标出每个地点大概停留时间和彼此交通方式；2) 标注每天走路总量，别安排太赶；3) 推荐吃饭的地方在当天景点附近；4) 最后列出需要提前预订的东西和大概价格。' },
-      { n: '2', text: '追问调整：「第二天太赶」「加个午休」' },
-      { n: '3', text: '门票餐厅自己上官方渠道订，别点对话里的链接' },
-    ],
-    indices: { prompt: 4, promptText: '说清 5 件事', hassle: 2, hassleText: '要追问调整', risk: 2, riskText: '价格会过时' },
-  },
-  'diy-tool': {
-    title: 'AI 能帮你写个小工具', tagline: '不学编程，描述清楚就能用',
-    accent: '#fbbf24', accent2: '#fde68a',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3 3L21 6l-3-3-3.3 3.3z"/><path d="m13.3 7.7-8.5 8.5c-.5.5-.8 1.2-.8 1.9V21h2.9c.7 0 1.4-.3 1.9-.8l8.5-8.5"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你想要的）：', prompt: '帮我写一个小工具：{描述功能，如"把一个文件夹里所有文件名里的空格改成下划线"}。要求：1) 用 Python，单文件，运行前先告诉我要装什么；2) 第一次先不要直接改文件，加个 --dry-run 参数让我先看会改什么；3) 代码里加中文注释，我要看懂每一步；4) 最后告诉我怎么运行、怎么撤销。' },
-      { n: '2', text: '按它说的装 Python，代码存成 .py 文件' },
-      { n: '3', text: '先跑 --dry-run 看会改什么，确认再真跑' },
-    ],
-    indices: { prompt: 5, promptText: '说清 5 件事', hassle: 3, hassleText: '要装环境', risk: 3, riskText: '先 dry-run' },
-  },
-  'book-my-trip': {
-    title: 'AI 能订好整个行程', tagline: 'AI 自己跑完全流程，你只审批',
-    accent: '#f97316', accent2: '#fdba74',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/><path d="M2 2l20 20"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}}（{{doubao}} 深度任务也行），发这段话（花括号换成你的）：', prompt: '帮我安排这次出行：{出发地}→{目的地}，{日期}，{N}人（{老人/孩子}）。请你分步做：1) 查当天可行的交通方案，列 2-3 个对比（时间/价格）；2) 在{预算}内筛 3 家位置合理的酒店，说明各自优缺点；3) 排出每天的行程框架，别太赶；4) 汇总成一份清单：哪些需要我现在确认下单、价格多少、截止时间。每完成一步汇报一次，付钱的事一律先停下来问我。' },
-      { n: '2', text: '它一步步执行并汇报，你像审项目一样看结果' },
-      { n: '3', text: '要付钱的自己核实后官方渠道下单' },
-    ],
-    indices: { prompt: 5, promptText: '一次说清', hassle: 4, hassleText: '要审批盯梢', risk: 4, riskText: '付钱自己来' },
-  },
-  'watch-updates': {
-    title: 'AI 能帮你盯网页更新', tagline: 'AI 定时去看，有变化叫你',
-    accent: '#22d3ee', accent2: '#67e8f9',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}}（{{doubao}} 深度任务也行），发这段话（花括号换成你的）：', prompt: '帮我盯住这个页面：{网址，如某商品的购买页/某官网的通知公告栏}。每隔一段时间去看一眼：如果出现{变化，如"价格低于 X 元"或"发布了新的报名通知"}，立刻整理成一句话通知我：变了什么、链接在哪、我该做什么。没变化就别打扰我。' },
-      { n: '2', text: '它定时检查，该干嘛干嘛去' },
-      { n: '3', text: '有变化主动通知你：变了什么、该做什么' },
-    ],
-    indices: { prompt: 4, promptText: '说清 3 件事', hassle: 3, hassleText: '装一次软件', risk: 2, riskText: '只授权一处' },
-  },
-  'photo-answer': {
-    title: 'AI 能看图回答', tagline: '这是什么/怎么用，拍一张就知道',
-    accent: '#4ade80', accent2: '#86efac',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 拍照，拍下想问的东西' },
-      { n: '2', text: '一句话说清你要什么：', prompt: '这是什么植物？怎么养？我们家光照一般。' },
-      { n: '3', text: '追问细节：「和XX比哪个好」「这步再讲一遍」' },
-    ],
-    indices: { prompt: 1, promptText: '拍一张说一句', hassle: 1, hassleText: '零门槛', risk: 1, riskText: '药品别当诊断' },
-  },
-  'english-speaking': {
-    title: 'AI 能陪你练口语', tagline: '无限耐心，说错也不丢人',
-    accent: '#818cf8', accent2: '#a5b4fc',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，开语音通话，先发这段话：', prompt: '接下来做英语口语练习：1) 场景是{机场值机/工作面试/点餐}，你扮演对方，我用英语对话；2) 我说错或有更好表达时，别打断，等这轮结束一次性纠正（给出地道说法）；3) 我用中文说你也装听不懂，逼我用英语；4) 每轮结束给我打分并总结 3 个改进点。' },
-      { n: '2', text: '按住说话，卡壳就硬说，它听得懂' },
-      { n: '3', text: '结束看总结，明天换场景再来' },
-    ],
-    indices: { prompt: 3, promptText: '定场景 1 次', hassle: 1, hassleText: '零安装', risk: 1, riskText: '几乎无' },
-  },
-  'fix-computer': {
-    title: 'AI 能帮你排查电脑问题', tagline: '报错截图发过去，八成是设置',
-    accent: '#94a3b8', accent2: '#cbd5e1',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，报错截图一起发，附这段话：', prompt: '我的电脑出了问题。1) 先根据截图/描述判断可能的原因，按可能性排序；2) 给我排查步骤，每步说清楚：点什么、预期看到什么、怎么判断这步有没有解决；3) 区分"我自己能做的"和"需要送修的"；4) 别让我下载来路不明的"修复工具"。' },
-      { n: '2', text: '按步骤反馈结果，它会修正判断' },
-      { n: '3', text: '硬件坏了（异响/进水）直接送修别折腾' },
-    ],
-    indices: { prompt: 4, promptText: '截图+1句', hassle: 2, hassleText: '要动手试', risk: 3, riskText: '别乱下工具' },
-  },
-  'multi-post': {
-    title: 'AI 能一稿多发', tagline: '写一次，AI 改成各平台版',
-    accent: '#f472b6', accent2: '#f9a8d4',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/><path d="M8 9h8M8 12h5"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}}（原稿存进授权文件夹），发这段话：', prompt: '这个文件夹里有我的原始文章。请把它改写成多平台版本：1) 公众号版（段落短、有钩子开头）；2) 知乎版（逻辑链完整、可长）；3) 小红书版（300字内、口语化、给5个标签）；4) 头条版（标题活泼但别失实）。每个版本单独存一个文件，保留我的核心观点和事实，别加我没说过的案例。完成后给我一个对照表：各版本差异在哪。' },
-      { n: '2', text: '逐版审稿，盯它有没有改你的事实' },
-      { n: '3', text: '发布自己点（各平台登录在你手里）' },
-    ],
-    indices: { prompt: 4, promptText: '说清规则', hassle: 4, hassleText: '要审 4 稿', risk: 3, riskText: '标注AI生成' },
-  },
-  'organize-files': {
-    title: 'AI 能理清乱文件夹', tagline: '几千个文件，AI 一次理清',
-    accent: '#2dd4bf', accent2: '#5eead4',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}}（只授权要整理的文件夹），发这段话：', prompt: '帮我整理这个文件夹：1) 先扫描统计：多少文件、什么类型、最老最新是什么；2) 给我一套分类方案（按类型/按年份/按项目，说明理由），列出会建哪些子文件夹；3) 我确认后你动手，但全程只移动不删除，重名文件加后缀不覆盖；4) 做完给我一份清单：每个文件夹放了什么、一共动了多少文件。' },
-      { n: '2', text: '方案不合理就打回重提' },
-      { n: '3', text: '审改动清单，反悔能按清单移回' },
-    ],
-    indices: { prompt: 4, promptText: '规则说死', hassle: 3, hassleText: '装一次软件', risk: 3, riskText: '只移动不删' },
-  },
-  'personal-site': {
-    title: 'AI 能搭起你的个人网站', tagline: 'AI 写码部署全包，你只选方案',
-    accent: '#a3e635', accent2: '#d9f99d',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-    steps: [
-      { n: '1', text: '电脑上 {{workbuddy}}，发这段话（花括号换成你的）：', prompt: '帮我从零做一个个人网站：用途{个人主页/作品集/简历}，内容{姓名、职业、要展示的3-5个作品或经历，可附文件让它读}。风格要求{简约深色/清爽浅色}。请你分步做：1) 先给我 2 个首页布局方案（描述区块）；2) 我选一个后你写完整代码；3) 本地跑起来截图给我看效果；4) 我确认后部署到免费托管并给我网址。每步停下来等我确认。' },
-      { n: '2', text: '选方案 → 它写码 → 截图给你过目' },
-      { n: '3', text: '确认后它部署上线，给你网址' },
-    ],
-    indices: { prompt: 5, promptText: '一次说清', hassle: 4, hassleText: '要审 3 轮', risk: 2, riskText: '隐私别放' },
-  },
-  'spot-scam': {
-    title: 'AI 能帮你识破诈骗', tagline: '可疑消息截图发它，帮你找破绽',
-    accent: '#f87171', accent2: '#fca5a5',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，可疑消息截图+这段话：', prompt: '我收到一条可疑消息/电话，请帮我分析：1) 有哪些常见的诈骗特征？2) 这条信息里有几处疑点？3) 如果是诈骗，下一步对方通常会怎么引导？4) 我该怎么核实真伪？' },
-      { n: '2', text: '冒充熟人的语音视频，追问「AI换脸的破绽」' },
-      { n: '3', text: 'AI说是真的也要回拨官方核实' },
-    ],
-    indices: { prompt: 2, promptText: '截图+1句', hassle: 1, hassleText: '随手可用', risk: 5, riskText: '最终靠人核实' },
-  },
-  'stock-caution': {
-    title: 'AI 炒股有红线', tagline: '能当学习参谋，不能当操盘手',
-    accent: '#fb923c', accent2: '#fdba74',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 13 4-4 4 4 5-5"/></svg>',
-    steps: [
-      { n: '1', text: '手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话：', prompt: '我在学投资，你当我的老师：1) 我发你财报术语/新闻，你解释背后含义，别给买卖建议；2) 我发你的K线截图，你讲这是什么形态、历史上这类形态的常见解读，同时强调局限性；3) 每次都提醒我哪些是你的知识局限。我不会问你"该买什么"。' },
-      { n: '2', text: '拿它拆财报、辨术语，不当荐股机器' },
-      { n: '3', text: '记住：它连昨天的股价都可能是编的' },
-    ],
-    indices: { prompt: 3, promptText: '先定边界', hassle: 1, hassleText: '随手可用', risk: 5, riskText: '荐股即骗局' },
-  },
-};
+
 
 const B = import.meta.env.BASE_URL.replace(/\/$/, ''); // '/wcad' 或 ''(base='/'时BASE_URL='/'须去尾, 否则${B}/x 变 //x 协议相对URL)
 const TOOL_HTML = {
@@ -238,15 +14,27 @@ const TOOL_HTML = {
   workbuddy: `<a class="tool-ic" href="https://www.workbuddy.cn/" target="_blank" rel="noopener" aria-label="WorkBuddy" data-tip="WorkBuddy · 腾讯"><img src="${B}/icons/workbuddy.svg" alt="" width="18" height="18" /></a>`,
 };
 
-const DEMO_ORDER = ['restore-old-photo', 'summarize-doc', 'photo-answer', 'ai-health-consult', 'tutoring-kids', 'explain-contract', 'english-speaking', 'fix-computer', 'make-poster', 'multi-post', 'travel-plan', 'book-my-trip', 'watch-updates', 'agent-organize-photos', 'organize-files', 'agent-research-report', 'personal-site', 'diy-tool', 'spot-scam', 'stock-caution'];
 const cards = tasks
-  .filter(t => DEMO_ORDER.includes(t.data.task_id))
-  .sort((a, b) => DEMO_ORDER.indexOf(a.data.task_id) - DEMO_ORDER.indexOf(b.data.task_id))
-  .map(t => ({
-  slug: t.id.replace(/\.md$/, ''),
-  ...(meta[t.data.task_id] ?? { title: t.data.task_id, tagline: '', icon: '', accent: '#8b5cf6', accent2: '#c4b5fd', steps: [], indices: { prompt: 0, promptText: '', hassle: 0, hassleText: '', risk: 0, riskText: '' } }),
-  riskRaw: t.data.indices.risk,
-}));
+  .filter(t => t.data.order != null)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map(t => {
+    const d = t.data;
+    return {
+      slug: t.id.replace(/\.md$/, ''),
+      title: d.title ?? d.task_id,
+      tagline: d.tagline ?? '',
+      icon: TASK_ICONS[d.icon ?? ''] ?? '',
+      accent: d.accent ?? '#8b5cf6',
+      accent2: d.accent2 ?? '#c4b5fd',
+      steps: d.steps ?? [],
+      indices: {
+        prompt: d.indices.prompt, promptText: d.indicesText?.prompt ?? '',
+        hassle: d.indices.hassle, hassleText: d.indicesText?.hassle ?? '',
+        risk: d.indices.risk, riskText: d.indicesText?.risk ?? '',
+      },
+      riskRaw: d.indices.risk,
+    };
+  });
 ---
 <html lang="zh-Hans">
 <head>

@@ -9,6 +9,24 @@ domains: [技术]
 type: chat
 last_tested: pending
 related: [explain-contract, agent-organize-photos]
+title: "AI 能帮你写个小工具"
+tagline: "不学编程，描述清楚就能用"
+accent: "#fbbf24"
+accent2: "#fde68a"
+icon: diy-tool
+order: 18
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你想要的）："
+    prompt: "帮我写一个小工具：{描述功能，如\"把一个文件夹里所有文件名里的空格改成下划线\"}。要求：1) 用 Python，单文件，运行前先告诉我要装什么；2) 第一次先不要直接改文件，加个 --dry-run 参数让我先看会改什么；3) 代码里加中文注释，我要看懂每一步；4) 最后告诉我怎么运行、怎么撤销。"
+  - n: "2"
+    text: "按它说的装 Python，代码存成 .py 文件"
+  - n: "3"
+    text: "先跑 --dry-run 看会改什么，确认再真跑"
+indicesText:
+  prompt: "说清 5 件事"
+  hassle: "要装环境"
+  risk: "先 dry-run"
 ---
 
 # 不学编程，让 AI 给你写小工具

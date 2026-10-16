@@ -9,6 +9,24 @@ domains: [生活, 創作]
 type: chat
 last_tested: pending
 related: [colorize-old-photo, animate-old-photo, organize-photos-agent]
+title: "AI 能修復老照片"
+tagline: "泛黃模糊 → 清晰彩色，5 分鐘"
+accent: "#fbbf24"
+accent2: "#fde68a"
+icon: restore-old-photo
+order: 1
+steps:
+  - n: "1"
+    text: "手機打開 {{chatgpt}} 或 {{gemini}} → ＋ → 照片，選一張老照片"
+  - n: "2"
+    text: "把這段話傳給 AI："
+    prompt: "修復這張老照片：提高清晰度、修復破損和褪色，如果是黑白照片就上色。保持人物面部特徵完全不要改動。"
+  - n: "3"
+    text: "等 30 秒，不滿意就直接說要改哪裡"
+indicesText:
+  prompt: "說 1 句"
+  hassle: "零安裝"
+  risk: "幾乎沒有"
 ---
 
 # 修復老照片

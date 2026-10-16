@@ -9,6 +9,24 @@ domains: [创作]
 type: chat
 last_tested: pending
 related: [restore-old-photo, tutoring-kids]
+title: "AI 能做出一张海报"
+tagline: "说清需求先出方案，两轮能用"
+accent: "#fb7185"
+accent2: "#fda4af"
+icon: make-poster
+order: 9
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你的）："
+    prompt: "帮我设计一张海报，主题：{生日聚会/店庆促销/社团招新}。要求：竖版手机屏幕比例，主色调用{暖橙色}，风格{简约/可爱/正式}。请先给我 2 个不同的布局方案（描述每个方案：标题放哪、配图风格、信息层级），我选一个后你再生成图片。"
+  - n: "2"
+    text: "选一个方案，或说「方案一，标题再大点」"
+  - n: "3"
+    text: "出图后逐字检查（AI 中文偶尔错字），满意长按保存"
+indicesText:
+  prompt: "说清 4 件事"
+  hassle: "零安装"
+  risk: "几乎无"
 ---
 
 # 不学设计，也能出海报

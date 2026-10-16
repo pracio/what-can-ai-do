@@ -9,6 +9,24 @@ domains: [技术]
 type: agent
 last_tested: pending
 related: [diy-tool, agent-research-report]
+title: "AI 能搭起你的个人网站"
+tagline: "AI 写码部署全包，你只选方案"
+accent: "#a3e635"
+accent2: "#d9f99d"
+icon: personal-site
+order: 17
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}}，发这段话（花括号换成你的）："
+    prompt: "帮我从零做一个个人网站：用途{个人主页/作品集/简历}，内容{姓名、职业、要展示的3-5个作品或经历，可附文件让它读}。风格要求{简约深色/清爽浅色}。请你分步做：1) 先给我 2 个首页布局方案（描述区块）；2) 我选一个后你写完整代码；3) 本地跑起来截图给我看效果；4) 我确认后部署到免费托管并给我网址。每步停下来等我确认。"
+  - n: "2"
+    text: "选方案 → 它写码 → 截图给你过目"
+  - n: "3"
+    text: "确认后它部署上线，给你网址"
+indicesText:
+  prompt: "一次说清"
+  hassle: "要审 3 轮"
+  risk: "隐私别放"
 ---
 
 # 让 AI 给你搭一个个人网站

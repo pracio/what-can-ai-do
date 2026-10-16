@@ -1,7 +1,7 @@
 ---
 task_id: summarize-doc
 lang: zh-Hans
-indices: {prompt: 5, hassle: 5, risk: 1}
+indices: {prompt: 1, hassle: 1, risk: 1}
 paths:
   - {tier: chat, tool: doubao, region: cn, verified: pending}
   - {tier: chat, tool: yuanbao, region: cn, verified: pending}
@@ -9,6 +9,24 @@ domains: [办公]
 type: chat
 last_tested: pending
 related: [explain-contract, agent-research-report]
+title: "AI 能把长文档读薄"
+tagline: "几十页 → 10 条要点，2 分钟"
+accent: "#60a5fa"
+accent2: "#93c5fd"
+icon: summarize-doc
+order: 2
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 文件，选中文档"
+  - n: "2"
+    text: "把这段话发给 AI："
+    prompt: "总结这份文档：用 10 条以内的要点讲清楚它说了什么。最后单独列出：文档里的数字、日期、金额，一共有哪些。"
+  - n: "3"
+    text: "太浅或太深，换一句话重问"
+indicesText:
+  prompt: "说 1 句"
+  hassle: "零安装"
+  risk: "几乎无"
 ---
 
 # 总结长文档

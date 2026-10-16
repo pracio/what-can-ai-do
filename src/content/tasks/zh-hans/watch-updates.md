@@ -9,6 +9,24 @@ domains: [效率办公]
 type: agent
 last_tested: pending
 related: [agent-research-report, travel-plan]
+title: "AI 能帮你盯网页更新"
+tagline: "AI 定时去看，有变化叫你"
+accent: "#22d3ee"
+accent2: "#67e8f9"
+icon: watch-updates
+order: 13
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}}（{{doubao}} 深度任务也行），发这段话（花括号换成你的）："
+    prompt: "帮我盯住这个页面：{网址，如某商品的购买页/某官网的通知公告栏}。每隔一段时间去看一眼：如果出现{变化，如\"价格低于 X 元\"或\"发布了新的报名通知\"}，立刻整理成一句话通知我：变了什么、链接在哪、我该做什么。没变化就别打扰我。"
+  - n: "2"
+    text: "它定时检查，该干嘛干嘛去"
+  - n: "3"
+    text: "有变化主动通知你：变了什么、该做什么"
+indicesText:
+  prompt: "说清 3 件事"
+  hassle: "装一次软件"
+  risk: "只授权一处"
 ---
 
 # 让 AI 盯着网页，有更新叫你

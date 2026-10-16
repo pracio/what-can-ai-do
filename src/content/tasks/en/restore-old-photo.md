@@ -9,6 +9,24 @@ domains: [Life, Creative]
 type: chat
 last_tested: pending
 related: [colorize-old-photo, animate-old-photo, organize-photos-agent]
+title: "AI can restore old photos"
+tagline: "Faded and blurry → sharp and in color, in 5 minutes"
+accent: "#fbbf24"
+accent2: "#fde68a"
+icon: restore-old-photo
+order: 1
+steps:
+  - n: "1"
+    text: "Open {{chatgpt}} or {{gemini}} on your phone → ＋ → Photos, pick an old photo"
+  - n: "2"
+    text: "Send this prompt:"
+    prompt: "Restore this old photo: improve sharpness, repair damage and fading, and colorize it if it's black and white. Keep every facial feature exactly the same."
+  - n: "3"
+    text: "Wait 30 seconds — not happy? Just say what to change"
+indicesText:
+  prompt: "1 sentence"
+  hassle: "No install"
+  risk: "Almost none"
 ---
 
 # Restore old photos

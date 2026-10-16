@@ -9,6 +9,24 @@ domains: [技术]
 type: chat
 last_tested: pending
 related: [diy-tool, organize-files]
+title: "AI 能帮你排查电脑问题"
+tagline: "报错截图发过去，八成是设置"
+accent: "#94a3b8"
+accent2: "#cbd5e1"
+icon: fix-computer
+order: 8
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，报错截图一起发，附这段话："
+    prompt: "我的电脑出了问题。1) 先根据截图/描述判断可能的原因，按可能性排序；2) 给我排查步骤，每步说清楚：点什么、预期看到什么、怎么判断这步有没有解决；3) 区分\"我自己能做的\"和\"需要送修的\"；4) 别让我下载来路不明的\"修复工具\"。"
+  - n: "2"
+    text: "按步骤反馈结果，它会修正判断"
+  - n: "3"
+    text: "硬件坏了（异响/进水）直接送修别折腾"
+indicesText:
+  prompt: "截图+1句"
+  hassle: "要动手试"
+  risk: "别乱下工具"
 ---
 
 # 电脑出问题，先问 AI 再花钱

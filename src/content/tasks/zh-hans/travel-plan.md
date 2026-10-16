@@ -9,6 +9,24 @@ domains: [生活]
 type: chat
 last_tested: pending
 related: [explain-contract, agent-research-report]
+title: "AI 能定制旅行行程"
+tagline: "按你家节奏排，不是网红攻略"
+accent: "#38bdf8"
+accent2: "#7dd3fc"
+icon: travel-plan
+order: 11
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，发这段话（花括号换成你的）："
+    prompt: "帮我规划一个行程：{目的地}，{N}天，{几月去}，同行有{老人/孩子/朋友}，预算人均{金额}（不含大交通）。要求：1) 每天不超过 3 个主要地点，标出每个地点大概停留时间和彼此交通方式；2) 标注每天走路总量，别安排太赶；3) 推荐吃饭的地方在当天景点附近；4) 最后列出需要提前预订的东西和大概价格。"
+  - n: "2"
+    text: "追问调整：「第二天太赶」「加个午休」"
+  - n: "3"
+    text: "门票餐厅自己上官方渠道订，别点对话里的链接"
+indicesText:
+  prompt: "说清 5 件事"
+  hassle: "要追问调整"
+  risk: "价格会过时"
 ---
 
 # 行程规划，从抄攻略到自己定制

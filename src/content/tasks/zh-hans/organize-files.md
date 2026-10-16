@@ -8,6 +8,24 @@ domains: [办公]
 type: agent
 last_tested: pending
 related: [agent-organize-photos, diy-tool]
+title: "AI 能理清乱文件夹"
+tagline: "几千个文件，AI 一次理清"
+accent: "#2dd4bf"
+accent2: "#5eead4"
+icon: organize-files
+order: 15
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}}（只授权要整理的文件夹），发这段话："
+    prompt: "帮我整理这个文件夹：1) 先扫描统计：多少文件、什么类型、最老最新是什么；2) 给我一套分类方案（按类型/按年份/按项目，说明理由），列出会建哪些子文件夹；3) 我确认后你动手，但全程只移动不删除，重名文件加后缀不覆盖；4) 做完给我一份清单：每个文件夹放了什么、一共动了多少文件。"
+  - n: "2"
+    text: "方案不合理就打回重提"
+  - n: "3"
+    text: "审改动清单，反悔能按清单移回"
+indicesText:
+  prompt: "规则说死"
+  hassle: "装一次软件"
+  risk: "只移动不删"
 ---
 
 # 下载文件夹的自我救赎

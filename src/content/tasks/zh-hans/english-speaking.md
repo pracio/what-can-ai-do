@@ -9,6 +9,24 @@ domains: [学习]
 type: chat
 last_tested: pending
 related: [tutoring-kids, photo-answer]
+title: "AI 能陪你练口语"
+tagline: "无限耐心，说错也不丢人"
+accent: "#818cf8"
+accent2: "#a5b4fc"
+icon: english-speaking
+order: 7
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，开语音通话，先发这段话："
+    prompt: "接下来做英语口语练习：1) 场景是{机场值机/工作面试/点餐}，你扮演对方，我用英语对话；2) 我说错或有更好表达时，别打断，等这轮结束一次性纠正（给出地道说法）；3) 我用中文说你也装听不懂，逼我用英语；4) 每轮结束给我打分并总结 3 个改进点。"
+  - n: "2"
+    text: "按住说话，卡壳就硬说，它听得懂"
+  - n: "3"
+    text: "结束看总结，明天换场景再来"
+indicesText:
+  prompt: "定场景 1 次"
+  hassle: "零安装"
+  risk: "几乎无"
 ---
 
 # 一个无限耐心的口语陪练

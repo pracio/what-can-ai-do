@@ -9,6 +9,24 @@ domains: [生活]
 type: agent
 last_tested: pending
 related: [travel-plan, watch-updates]
+title: "AI 能订好整个行程"
+tagline: "AI 自己跑完全流程，你只审批"
+accent: "#f97316"
+accent2: "#fdba74"
+icon: book-my-trip
+order: 12
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}}（{{doubao}} 深度任务也行），发这段话（花括号换成你的）："
+    prompt: "帮我安排这次出行：{出发地}→{目的地}，{日期}，{N}人（{老人/孩子}）。请你分步做：1) 查当天可行的交通方案，列 2-3 个对比（时间/价格）；2) 在{预算}内筛 3 家位置合理的酒店，说明各自优缺点；3) 排出每天的行程框架，别太赶；4) 汇总成一份清单：哪些需要我现在确认下单、价格多少、截止时间。每完成一步汇报一次，付钱的事一律先停下来问我。"
+  - n: "2"
+    text: "它一步步执行并汇报，你像审项目一样看结果"
+  - n: "3"
+    text: "要付钱的自己核实后官方渠道下单"
+indicesText:
+  prompt: "一次说清"
+  hassle: "要审批盯梢"
+  risk: "付钱自己来"
 ---
 
 # 帮我把行程"订"好，不只是"排"好

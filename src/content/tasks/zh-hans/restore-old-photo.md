@@ -1,7 +1,7 @@
 ---
 task_id: restore-old-photo
 lang: zh-Hans
-indices: {prompt: 4, hassle: 1, risk: 1}
+indices: {prompt: 1, hassle: 1, risk: 1}
 paths:
   - {tier: chat, tool: doubao, region: cn, verified: pending}
   - {tier: chat, tool: yuanbao, region: cn, verified: pending}
@@ -10,6 +10,24 @@ domains: [生活, 创作]
 type: chat
 last_tested: pending
 related: [colorize-old-photo, animate-old-photo, organize-photos-agent]
+title: "AI 能修复老照片"
+tagline: "泛黄模糊 → 清晰彩色，5 分钟"
+accent: "#fbbf24"
+accent2: "#fde68a"
+icon: restore-old-photo
+order: 1
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 图片，选一张老照片"
+  - n: "2"
+    text: "把这段话发给 AI："
+    prompt: "修复这张老照片：提高清晰度、修复破损和褪色，如果是黑白照片就上色。保持人物面部特征完全不变。"
+  - n: "3"
+    text: "等 30 秒，不满意就追加要求"
+indicesText:
+  prompt: "说 1 句"
+  hassle: "零安装"
+  risk: "几乎无"
 ---
 
 # 修复老照片

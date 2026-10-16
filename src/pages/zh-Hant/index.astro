@@ -1,70 +1,11 @@
 ---
+import { TASK_ICONS } from '../../icons/task-icons';
 import { getCollection } from 'astro:content';
 
-const tasks = (await getCollection('tasks')).sort((a, b) => a.id.localeCompare(b.id));
+const tasks = (await getCollection('tasksZhHant')).sort((a, b) => a.id.localeCompare(b.id));
 
 // 每case: SVG图标 + accent色 + 三步速览(看一眼就知道怎么做) + 单行指数
-const meta: Record<string, {
-  title: string; tagline: string; icon: string; accent: string; accent2: string;
-  steps: {n: string; text: string}[];
-  indices: {prompt: string; hassle: string; risk: string};
-}> = {
-  'restore-old-photo': {
-    title: 'AI 能修復老照片', tagline: '泛黃模糊 → 清晰彩色，5 分鐘',
-    accent: '#fbbf24', accent2: '#fde68a',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.9-3.9a2 2 0 0 0-2.8 0L6 19"/></svg>',
-    steps: [
-      { n: '1', text: '手機打開 {{chatgpt}} 或 {{gemini}} → ＋ → 照片，選一張老照片' },
-      { n: '2', text: '把這段話傳給 AI：', prompt: '修復這張老照片：提高清晰度、修復破損和褪色，如果是黑白照片就上色。保持人物面部特徵完全不要改動。' },
-      { n: '3', text: '等 30 秒，不滿意就直接說要改哪裡' },
-    ],
-    indices: { prompt: 1, promptText: '說 1 句', hassle: 1, hassleText: '零安裝', risk: 1, riskText: '幾乎沒有' },
-  },
-  'summarize-doc': {
-    title: 'AI 能把長文件讀薄', tagline: '幾十頁 → 10 條重點，2 分鐘',
-    accent: '#60a5fa', accent2: '#93c5fd',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>',
-    steps: [
-      { n: '1', text: '手機打開 {{chatgpt}} 或 {{gemini}} → ＋ → 檔案，選好文件' },
-      { n: '2', text: '把這段話傳給 AI：', prompt: '總結這份文件：用 10 條以內的重點講清楚它在說什麼。最後單獨列出：文件裡的數字、日期、金額，一共有哪些。' },
-      { n: '3', text: '太淺或太深，換一句話再問' },
-    ],
-    indices: { prompt: 1, promptText: '說 1 句', hassle: 1, hassleText: '零安裝', risk: 1, riskText: '幾乎沒有' },
-  },
-  'tutoring-kids': {
-    title: 'AI 能陪孩子練習功課', tagline: '只引導不給答案，孩子自己想',
-    accent: '#34d399', accent2: '#6ee7b7',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>',
-    steps: [
-      { n: '1', text: '手機打開 {{chatgpt}} 或 {{gemini}}，先傳這段話定規矩：', prompt: '你在輔導國小學生作業時，不要直接給答案。我傳給你一道題目，你要：1) 先問我孩子卡在哪一步；2) 出一道類似但數字不同的例題，帶孩子走一遍思路；3) 讓孩子自己寫原題；4) 寫錯了再提示，一次只提示一小步。現在第一題是：' },
-      { n: '2', text: '拍照傳題目，讓 AI 問孩子卡在哪' },
-      { n: '3', text: '孩子自己寫完，錯了 AI 一次只提示一小步' },
-    ],
-    indices: { prompt: 3, promptText: '定規矩 1 次', hassle: 1, hassleText: '零安裝', risk: 2, riskText: '別直接給答案' },
-  },
-  'agent-research-report': {
-    title: 'AI 能幫你做研究', tagline: '它自己查幾十個來源，給你一份報告',
-    accent: '#34d399', accent2: '#a7f3d0',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg>',
-    steps: [
-      { n: '1', text: '手機打開 {{chatgpt}} → 新對話選「深度研究」（{{gemini}} 同樣有）' },
-      { n: '2', text: '把這段話傳給 AI（換主題）：', prompt: '幫我研究「我想買的手機」：先拆解成 3-5 個關鍵問題，逐一上網查證，最後給我一份報告——結論放最前面，中間列出不同來源的說法和分歧，結尾註明資訊的時效性。' },
-      { n: '3', text: '追問它：「這個結論的來源可靠嗎」' },
-    ],
-    indices: { prompt: 2, promptText: '說 2 句', hassle: 2, hassleText: '等 10 分鐘', risk: 2, riskText: '重大決策要核對' },
-  },
-  'spot-scam': {
-    title: 'AI 能幫你識破詐騙', tagline: '可疑訊息截圖傳給它，幫你找破綻',
-    accent: '#f87171', accent2: '#fca5a5',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
-    steps: [
-      { n: '1', text: '手機打開 {{chatgpt}} 或 {{gemini}}，可疑訊息截圖+這段話：', prompt: '我收到一則可疑的訊息/電話，請幫我分析：1) 這類詐騙有哪些常見特徵？2) 這則訊息裡有幾處疑點？3) 如果是詐騙，對方下一步通常會怎麼引導？4) 我該怎麼查證真偽？' },
-      { n: '2', text: '冒充熟人的語音視訊，追問「AI 換臉的破綻」' },
-      { n: '3', text: 'AI 說是真的也要掛斷，改撥官方電話確認' },
-    ],
-    indices: { prompt: 2, promptText: '截圖+1 句', hassle: 1, hassleText: '隨手可用', risk: 5, riskText: '最終靠人查證' },
-  },
-};
+
 
 
 const B = import.meta.env.BASE_URL.replace(/\/$/, ''); // '/wcad' 或 ''(base='/'时BASE_URL='/'须去尾, 否则${B}/x 变 //x 协议相对URL)
@@ -73,15 +14,27 @@ const TOOL_HTML = {
   gemini: `<a class="tool-ic" href="https://gemini.google.com/" target="_blank" rel="noopener" aria-label="Gemini" data-tip="Gemini · Google"><img src="${B}/icons/gemini.svg" alt="" width="18" height="18" /></a>`,
 };
 
-const DEMO_ORDER = ['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam'];
 const cards = tasks
-  .filter(t => DEMO_ORDER.includes(t.data.task_id))
-  .sort((a, b) => DEMO_ORDER.indexOf(a.data.task_id) - DEMO_ORDER.indexOf(b.data.task_id))
-  .map(t => ({
-  slug: t.id.replace(/\.md$/, ''),
-  ...(meta[t.data.task_id] ?? { title: t.data.task_id, tagline: '', icon: '', accent: '#8b5cf6', accent2: '#c4b5fd', steps: [], indices: { prompt: 0, promptText: '', hassle: 0, hassleText: '', risk: 0, riskText: '' } }),
-  riskRaw: t.data.indices.risk,
-}));
+  .filter(t => t.data.order != null)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map(t => {
+    const d = t.data;
+    return {
+      slug: t.id.replace(/\.md$/, ''),
+      title: d.title ?? d.task_id,
+      tagline: d.tagline ?? '',
+      icon: TASK_ICONS[d.icon ?? ''] ?? '',
+      accent: d.accent ?? '#8b5cf6',
+      accent2: d.accent2 ?? '#c4b5fd',
+      steps: d.steps ?? [],
+      indices: {
+        prompt: d.indices.prompt, promptText: d.indicesText?.prompt ?? '',
+        hassle: d.indices.hassle, hassleText: d.indicesText?.hassle ?? '',
+        risk: d.indices.risk, riskText: d.indicesText?.risk ?? '',
+      },
+      riskRaw: d.indices.risk,
+    };
+  });
 ---
 <html lang="zh-Hant">
 <head>
@@ -430,7 +383,7 @@ const cards = tasks
             </span>
           ))}
         </div>
-        <a class="open" href={`${B}/tasks/${c.slug}/`}>完整教學 <span aria-hidden="true">→</span></a>
+        <a class="open" href={`${B}/zh-Hant/tasks/${c.slug}/`}>完整教學 <span aria-hidden="true">→</span></a>
       </section>
     ))}
   </div>

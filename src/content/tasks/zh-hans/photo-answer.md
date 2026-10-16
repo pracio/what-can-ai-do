@@ -9,6 +9,24 @@ domains: [生活]
 type: chat
 last_tested: pending
 related: [tutoring-kids, fix-computer]
+title: "AI 能看图回答"
+tagline: "这是什么/怎么用，拍一张就知道"
+accent: "#4ade80"
+accent2: "#86efac"
+icon: photo-answer
+order: 3
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}} → ＋ → 拍照，拍下想问的东西"
+  - n: "2"
+    text: "一句话说清你要什么："
+    prompt: "这是什么植物？怎么养？我们家光照一般。"
+  - n: "3"
+    text: "追问细节：「和XX比哪个好」「这步再讲一遍」"
+indicesText:
+  prompt: "拍一张说一句"
+  hassle: "零门槛"
+  risk: "药品别当诊断"
 ---
 
 # 拍照即问：这个是什么/坏了怎么修

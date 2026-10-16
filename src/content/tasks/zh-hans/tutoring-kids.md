@@ -9,6 +9,24 @@ domains: [学习]
 type: chat
 last_tested: pending
 related: [make-poster, travel-plan]
+title: "AI 能辅导孩子作业"
+tagline: "AI 只引导不报答案，孩子自己想"
+accent: "#34d399"
+accent2: "#6ee7b7"
+icon: tutoring-kids
+order: 5
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话定规矩："
+    prompt: "你在辅导小学生作业时不要直接给答案。我发给你一道题，你要：1) 先问我孩子卡在哪一步；2) 给一个类似但数字不同的例题，带孩子走一遍思路；3) 让孩子自己做原题；4) 孩子做错了再提示，每次只提示一小步。现在第一题是："
+  - n: "2"
+    text: "拍照发题目，让 AI 反问孩子卡在哪"
+  - n: "3"
+    text: "孩子自己做完，错了 AI 每次只提示一小步"
+indicesText:
+  prompt: "定规矩 1 次"
+  hassle: "零安装"
+  risk: "别直接报答案"
 ---
 
 # 辅导孩子作业，而不是替他写

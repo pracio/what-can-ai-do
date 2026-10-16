@@ -9,6 +9,24 @@ domains: [生活]
 type: chat
 last_tested: pending
 related: [travel-plan, diy-tool]
+title: "AI 能讲透合同账单"
+tagline: "大白话讲透，不利条款标出来"
+accent: "#a78bfa"
+accent2: "#c4b5fd"
+icon: explain-contract
+order: 6
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话："
+    prompt: "我发你一份合同/账单。请你：1) 用大白话讲清楚这份文件的核心内容，像讲给完全不懂的朋友听；2) 单独列出对我不利的条款或费用，用「需要注意」标出来；3) 指出写得含糊、值得问对方的地方。我不是法律专业人士，别用术语堆砌。"
+  - n: "2"
+    text: "拍照发合同（多页拍全，小字分开拍）"
+  - n: "3"
+    text: "对着「需要注意」清单逐条问对方或查证"
+indicesText:
+  prompt: "说 1 句"
+  hassle: "拍照就行"
+  risk: "它不是律师"
 ---
 
 # 租房合同、账单、说明书，让它讲人话

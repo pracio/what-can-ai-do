@@ -1,7 +1,7 @@
 ---
 task_id: ai-health-consult
 lang: zh-Hans
-indices: {prompt: 3, hassle: 5, risk: 5}
+indices: {prompt: 2, hassle: 1, risk: 4}
 paths:
   - {tier: chat, tool: doubao, region: cn, verified: pending}
   - {tier: chat, tool: yuanbao, region: cn, verified: pending}
@@ -9,6 +9,24 @@ domains: [风险教育, 生活]
 type: chat
 last_tested: pending
 related: [ai-stock-invest, scam-awareness]
+title: "AI 能帮你读懂体检报告"
+tagline: "看懂体检报告，就诊前不慌"
+accent: "#ff6b6b"
+accent2: "#ff9a8b"
+icon: ai-health-consult
+order: 4
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}} → 拍体检报告（先涂掉姓名身份证）"
+  - n: "2"
+    text: "把这段话发给 AI："
+    prompt: "用大白话解释这份体检报告里的每个指标：哪些正常、哪些偏高偏低、各自可能意味着什么。不需要开药，只要帮我听懂医生会说什么。"
+  - n: "3"
+    text: "拿不准的项，记下来问医生"
+indicesText:
+  prompt: "追问几句"
+  hassle: "零安装"
+  risk: "别替代就医"
 ---
 
 # 问 AI 健康问题

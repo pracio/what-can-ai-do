@@ -9,6 +9,24 @@ domains: [风险]
 type: chat
 last_tested: pending
 related: [spot-scam, explain-contract]
+title: "AI 炒股有红线"
+tagline: "能当学习参谋，不能当操盘手"
+accent: "#fb923c"
+accent2: "#fdba74"
+icon: stock-caution
+order: 20
+steps:
+  - n: "1"
+    text: "手机上打开 {{doubao}} 或 {{yuanbao}}，先发这段话："
+    prompt: "我在学投资，你当我的老师：1) 我发你财报术语/新闻，你解释背后含义，别给买卖建议；2) 我发你的K线截图，你讲这是什么形态、历史上这类形态的常见解读，同时强调局限性；3) 每次都提醒我哪些是你的知识局限。我不会问你\"该买什么\"。"
+  - n: "2"
+    text: "拿它拆财报、辨术语，不当荐股机器"
+  - n: "3"
+    text: "记住：它连昨天的股价都可能是编的"
+indicesText:
+  prompt: "先定边界"
+  hassle: "随手可用"
+  risk: "荐股即骗局"
 ---
 
 # AI 炒股：能当参谋，不能当操盘手

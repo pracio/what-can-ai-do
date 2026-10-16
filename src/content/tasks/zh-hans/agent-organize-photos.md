@@ -8,6 +8,24 @@ domains: [生活]
 type: agent
 last_tested: pending
 related: [restore-old-photo, agent-research-report]
+title: "AI 能整理你的照片"
+tagline: "电脑上的 AI 员工，批量分类你只审批"
+accent: "#a78bfa"
+accent2: "#ddd6fe"
+icon: agent-organize-photos
+order: 14
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}} <a href=\"https://www.workbuddy.cn/\" target=\"_blank\" rel=\"noopener\" class=\"web-link\">下载安装 WorkBuddy</a>（免费）"
+  - n: "2"
+    text: "打开后选择你存照片的文件夹，把这段话发给它："
+    prompt: "这个文件夹里的照片和截图很乱。帮我分类：旅游风景、人物合影、截图、文件收据、其他。分好类整理成子文件夹，给我一份清单：每类数量、时间范围、建议保留还是删。动手前先告诉我你打算怎么分。"
+  - n: "3"
+    text: "它动手前会找你确认，看过方案再放行，「建议删」的自己过目"
+indicesText:
+  prompt: "说 2 句"
+  hassle: "要先装软件"
+  risk: "删除要自己确认"
 ---
 
 # 让 AI 整理你电脑里的照片

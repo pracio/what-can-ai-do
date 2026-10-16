@@ -8,6 +8,24 @@ domains: [创作, 办公]
 type: agent
 last_tested: pending
 related: [make-poster, agent-research-report]
+title: "AI 能一稿多发"
+tagline: "写一次，AI 改成各平台版"
+accent: "#f472b6"
+accent2: "#f9a8d4"
+icon: multi-post
+order: 10
+steps:
+  - n: "1"
+    text: "电脑上 {{workbuddy}}（原稿存进授权文件夹），发这段话："
+    prompt: "这个文件夹里有我的原始文章。请把它改写成多平台版本：1) 公众号版（段落短、有钩子开头）；2) 知乎版（逻辑链完整、可长）；3) 小红书版（300字内、口语化、给5个标签）；4) 头条版（标题活泼但别失实）。每个版本单独存一个文件，保留我的核心观点和事实，别加我没说过的案例。完成后给我一个对照表：各版本差异在哪。"
+  - n: "2"
+    text: "逐版审稿，盯它有没有改你的事实"
+  - n: "3"
+    text: "发布自己点（各平台登录在你手里）"
+indicesText:
+  prompt: "说清规则"
+  hassle: "要审 4 稿"
+  risk: "标注AI生成"
 ---
 
 # 一稿多发：写一次，铺满各平台
