@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import TaskPage from '../../../components/TaskPage.astro';
+
+export async function getStaticPaths() {
+  const tasks = await getCollection('tasksEn');
+  return tasks.map((task) => ({
+    params: { slug: task.id.replace(/\.md$/, '') },
+    props: { task },
+  }));
+}
+
+const { task } = Astro.props;
+const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const ui = {
+  backLabel: '← All walkthroughs',
+  homeHref: `${B}/en/`,
+  themeBtn: '☀︎/☾ theme',
+  themeAria: 'Toggle light and dark theme',
+  footnote: 'Ratings: Prompt effort = how much you have to say to get the result you want; Setup = how much you need to install; Risk = how bad it gets if things go wrong.',
+  lastTested: 'Last tested: ',
+  pendingBadge: 'Not yet verified on a real device',
+  htmlLang: 'en',
+};
+---
+<TaskPage task={task} ui={ui} />

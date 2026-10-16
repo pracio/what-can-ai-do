@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import TaskPage from '../../../components/TaskPage.astro';
+
+export async function getStaticPaths() {
+  const tasks = await getCollection('tasksZhHant');
+  return tasks.map((task) => ({
+    params: { slug: task.id.replace(/\.md$/, '') },
+    props: { task },
+  }));
+}
+
+const { task } = Astro.props;
+const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const ui = {
+  backLabel: '← 回到所有案例',
+  homeHref: `${B}/zh-Hant/`,
+  themeBtn: '☀︎/☾ 切換',
+  themeAria: '切換亮色暗色',
+  footnote: '指數說明：一句話指數=你要對 AI 說多少話才能達到理想效果；折騰指數=架環境要裝多少東西；風險指數=搞砸了有多大代價。',
+  lastTested: '最後實測：',
+  pendingBadge: '路徑待真機驗證',
+  htmlLang: 'zh-Hant',
+};
+---
+<TaskPage task={task} ui={ui} />
