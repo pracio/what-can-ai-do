@@ -285,17 +285,8 @@ const cards = tasks
       font-family: inherit; padding-right: 84px;
     }
     .prompt-quote:hover { border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: color-mix(in srgb, var(--accent) 12%, var(--quote-bg-hover)); }
-    .prompt-quote .copy-tag {
-      position: absolute; top: 8px; right: 10px;
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11px; font-weight: 600; color: #0a0a0f;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      padding: 2px 9px; border-radius: 999px;
-      box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 40%, transparent);
-    }
     .prompt-quote.copied { border-style: solid; border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.08); }
-    .prompt-quote.copied .copy-tag { background: linear-gradient(120deg, #4ade80, #86efac); box-shadow: 0 2px 10px rgba(74,222,128,.4); }
-
+    
     /* 指数: 压成一行小字 */
     .indices-line {
       margin-top: 18px; font-size: 13px; letter-spacing: .02em;
@@ -424,10 +415,6 @@ const cards = tasks
               {s.prompt && (
                 <button class="prompt-quote" data-prompt={s.prompt} aria-label="點擊複製這段話">
                   <span class="q">“{s.prompt}”</span>
-                  <span class="copy-tag">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    複製
-                  </span>
                 </button>
               )}
             </div>
@@ -530,12 +517,13 @@ const cards = tasks
         document.execCommand('copy'); ta.remove();
       }
       btn.classList.add('copied');
-      const tag = btn.querySelector('.copy-tag')!;
-      const orig = tag.innerHTML;
-      tag.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 已複製';
+      const row = btn.closest('.step-row') as HTMLElement | null;
+      const hint = row ? row.querySelector('.copy-hint') : null;
+      const orig = hint ? hint.textContent : null;
+      if (hint) hint.textContent = '已複製 ✓';
       setTimeout(() => {
         btn.classList.remove('copied');
-        tag.innerHTML = orig;
+        if (hint && orig) hint.textContent = orig;
       }, 1800);
     });
 
