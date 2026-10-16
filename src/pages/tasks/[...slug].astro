@@ -23,26 +23,56 @@ function stars(n: number) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{task.data.task_id} — What Can AI Do?</title>
     <style is:global>
-      body { max-width: 680px; margin: 0 auto; padding: 20px; font-family: system-ui, sans-serif; line-height: 1.75; color: #1a1a1a; }
+      :root {
+        --bg: #08080c; --ink: #f2f2f7; --ink-dim: rgba(242,242,247,.65); --ink-faint: rgba(242,242,247,.45);
+        --card: rgba(255,255,255,.055); --card-border: rgba(255,255,255,.12);
+        --line: rgba(255,255,255,.08); --code-bg: rgba(255,255,255,.09);
+        --accent: #fbbf24; --accent-soft: rgba(251,191,36,.12);
+      }
+      [data-theme="light"] {
+        --bg: #f7f7fa; --ink: #1a1a22; --ink-dim: rgba(26,26,34,.68); --ink-faint: rgba(26,26,34,.45);
+        --card: rgba(255,255,255,.72); --card-border: rgba(26,26,34,.1);
+        --line: rgba(26,26,34,.09); --code-bg: rgba(26,26,34,.06);
+        --accent-soft: rgba(251,191,36,.16);
+      }
+      * { box-sizing: border-box; }
+      body { max-width: 680px; margin: 0 auto; padding: 20px; font-family: -apple-system, system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.75; color: var(--ink); background: var(--bg); transition: background .3s, color .3s; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+      a.back { font-size: 0.9em; text-decoration: none; color: var(--ink-dim); }
+      a.back:hover { color: var(--ink); }
+      .theme-btn { border: 1px solid var(--card-border); background: var(--card); color: var(--ink-dim);
+                   border-radius: 999px; padding: 3px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
       table { border-collapse: collapse; width: 100%; margin: 12px 0; }
-      th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 0.92em; }
-      th { background: #f6f6f6; }
-      blockquote { border-left: 4px solid #4a90d9; background: #f0f6ff; margin: 10px 0; padding: 10px 14px; border-radius: 4px; }
+      th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; font-size: 0.92em; }
+      th { background: var(--card); }
+      blockquote { border-left: 4px solid var(--accent); background: var(--accent-soft); margin: 10px 0; padding: 10px 14px; border-radius: 4px; }
       blockquote p { margin: 0; }
-      h1 { font-size: 1.5em; } h2 { font-size: 1.2em; margin-top: 1.6em; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+      h1 { font-size: 1.5em; } h2 { font-size: 1.2em; margin-top: 1.6em; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
       h3 { font-size: 1.05em; }
-      code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
-      .badge { background: #fff3cd; padding: 2px 8px; border-radius: 10px; font-size: 0.85em; }
-      a.back { font-size: 0.9em; text-decoration: none; }
+      code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+      .badge { background: var(--accent-soft); padding: 2px 8px; border-radius: 10px; font-size: 0.85em; }
+      hr { margin-top: 3em; border: none; border-top: 1px solid var(--line); }
+      .footnote { font-size: 0.85em; color: var(--ink-faint); }
+      a { color: #93c5fd; }
     </style>
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('wcad-theme');
+        var sys = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.dataset.theme = saved || sys;
+      })();
+    </script>
   </head>
   <body>
-    <a class="back" href={`${(import.meta.env.BASE_URL ?? '/').replace(/\/$/, '')}/`}>← 返回所有任务</a>
+    <div class="topbar">
+      <a class="back" href={`${(import.meta.env.BASE_URL ?? '/').replace(/\/$/, '')}/`}>← 返回所有任务</a>
+      <button class="theme-btn" id="theme-btn" aria-label="切换亮色暗色">☀︎/☾ 切换</button>
+    </div>
     <article>
       <Content />
     </article>
-    <hr style="margin-top: 3em; border: none; border-top: 1px solid #eee;" />
-    <p style="font-size: 0.85em; color: #888;">
+    <hr />
+    <p class="footnote">
       指数说明：一句话指数=你要对 AI 说多少话才能达到理想效果；折腾指数=搭环境要装多少东西；风险指数=搞砸了有多大代价。
       {task.data.last_tested && task.data.last_tested !== 'pending' && (
         <span>最后实测：{task.data.last_tested}</span>
@@ -51,5 +81,12 @@ function stars(n: number) {
         <span class="badge">路径待真机验证</span>
       )}
     </p>
+    <script is:inline>
+      document.getElementById('theme-btn').addEventListener('click', function () {
+        var cur = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = cur;
+        localStorage.setItem('wcad-theme', cur);
+      });
+    </script>
   </body>
 </html>

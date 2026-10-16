@@ -42,16 +42,19 @@ const VIEWPORTS = [
     const leaks = await page.evaluate(() => (document.body.innerHTML.match(/\{\{(doubao|yuanbao|workbuddy)\}\}/g) || []));
     check(`[${vp.name}] 占位符无泄漏`, leaks.length === 0, leaks.join(',') || 'clean');
 
-    // 2. 绝对路径资源(子路径部署会挂)
-    const absPaths = await page.evaluate(() => {
-      const bad = [];
-      document.querySelectorAll('img[src^="/"], a[href^="/tasks"]').forEach(el => {
-        const v = el.src || el.getAttribute('href');
-        if (!v.includes(location.pathname.split('/')[1] || '~')) bad.push(v);
+    // 2. 绝对路径资源(仅子路径部署时有意义; 根域名部署资源本就应从/出发)
+    const hasSubpath = new URL(page.url()).pathname.split('/').filter(Boolean).length > 0;
+    if (hasSubpath) {
+      const absPaths = await page.evaluate(() => {
+        const bad = [];
+        document.querySelectorAll('img[src^="/"], a[href^="/tasks"]').forEach(el => {
+          const v = el.src || el.getAttribute('href');
+          if (!v.includes(location.pathname.split('/')[1] || '~')) bad.push(v);
+        });
+        return bad;
       });
-      return bad;
-    });
-    check(`[${vp.name}] 资源路径含base前缀`, absPaths.length === 0, absPaths.join(',') || 'clean');
+      check(`[${vp.name}] 资源路径含base前缀`, absPaths.length === 0, absPaths.join(',') || 'clean');
+    }
 
     const slideCount = await page.locator('.slide').count();
     for (let i = 0; i < slideCount; i++) {
@@ -116,8 +119,8 @@ const VIEWPORTS = [
     const ph = /FEEDBACK_URL_PLACEHOLDER|mailto:hello@example\.com/.test(aboutText);
     check(`[${vp.name}] about页无占位链接`, !ph, ph ? '有PLACEHOLDER(评审期可放行, 上线前必换)' : 'clean');
 
-    // 7. CTA链接(首页第一屏)
-    await page.evaluate(() => window.__wcadGo(0));
+    // 7. CTA链接(第一个案例屏; slide0是hero无CTA)
+    await page.evaluate(() => window.__wcadGo(1));
     await page.waitForTimeout(600);
     const ctaHref = await page.locator('.slide.active .open').first().getAttribute('href');
     const ctaUrl = new URL(ctaHref, BASE).toString();
