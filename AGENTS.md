@@ -1,3 +1,10 @@
+## GitHub
+
+- Repo: pracio/what-can-ai-do (public)
+- Credentials: Hermes .env via `hermes config set` — GITHUB_TOKEN / GITHUB_USER / GITHUB_REPO (read back with `hermes config get <KEY>`)
+- Push flow: keep remote URL token-free; authenticate per-command, e.g. `git -c http.extraHeader="Authorization: token $(hermes config get GITHUB_TOKEN)" push` or export GH_TOKEN inline
+- git identity: pracio <pracio@users.noreply.github.com>
+
 ## Development
 
 When starting the dev server, use background mode:
