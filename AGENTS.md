@@ -2,7 +2,7 @@
 
 - Repo: pracio/what-can-ai-do (public)
 - Credentials: Hermes .env via `hermes config set` — GITHUB_TOKEN / GITHUB_USER / GITHUB_REPO (read back with `hermes config get <KEY>`)
-- Push flow: keep remote URL token-free; authenticate per-command, e.g. `git -c http.extraHeader="Authorization: token $(hermes config get GITHUB_TOKEN)" push` or export GH_TOKEN inline
+- Push flow: keep remote URL token-free; push with one-shot inline token read from the secret store: `T=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | cut -d= -f2); git push https://pracio:$T@github.com/pracio/what-can-ai-do.git main` (http.extraHeader auth does NOT work here — git still prompts for username)
 - git identity: pracio <pracio@users.noreply.github.com>
 
 ## Development
