@@ -15,7 +15,8 @@ export type TaskPageUI = {
   shareOk: string;
 };
 
-const TRIO_SLUGS = new Set(['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam']);
+import { trioSlugs } from '../lib/slug-registry';
+const TRIO_SLUGS = new Set(trioSlugs());
 const { task, ui, prev, next } = Astro.props;
 const { Content } = await render(task);
 ---

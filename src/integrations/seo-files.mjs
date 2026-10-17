@@ -43,7 +43,13 @@ export function seoFiles() {
         const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
         // hreflang: 首页三语互指; 详情页只有三语齐的5个slug互指
         const HOME_SET = ['/zh-Hans/', '/zh-Hant/', '/en/'];
-        const TRIO = new Set(['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam']);
+        // 动态检测三语齐的slug: 扫content目录(单一事实源=md文件本身)
+        const root = process.cwd();
+        const slugsIn = (d) => new Set(
+          fs.readdirSync(root + '/src/content/tasks/' + d).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)),
+        );
+        const zH = slugsIn('zh-hans'), hT = slugsIn('zh-hant'), eN = slugsIn('en');
+        const TRIO = new Set([...zH].filter((x) => hT.has(x) && eN.has(x)));
         const altOf = (u) => {
           const m = u.match(/^\/(zh-Hans|zh-Hant|en)\/(?:tasks\/([a-z0-9-]+)\/)?$/);
           if (!m) return '';
