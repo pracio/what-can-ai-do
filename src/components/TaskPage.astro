@@ -79,7 +79,12 @@ const { Content } = await render(task);
         document.documentElement.dataset.theme = saved || sys;
       })();
     </script>
-  </head>
+    <meta property="og:image" content="https://what-can-ai-do.pages.dev/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://what-can-ai-do.pages.dev/og-card.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+</head>
   <body>
     <div class="topbar">
       <a class="back" href={ui.homeHref}>{ui.backLabel}</a>
