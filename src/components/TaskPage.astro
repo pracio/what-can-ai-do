@@ -16,7 +16,7 @@ export type TaskPageUI = {
 };
 
 const TRIO_SLUGS = new Set(['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam']);
-const { task, ui } = Astro.props;
+const { task, ui, prev, next } = Astro.props;
 const { Content } = await render(task);
 ---
 <html lang={ui.htmlLang}>
@@ -71,12 +71,59 @@ const { Content } = await render(task);
       hr { margin-top: 3em; border: none; border-top: 1px solid var(--line); }
       .footnote { font-size: 0.85em; color: var(--ink-faint); }
       a { color: #93c5fd; }
+      .risk-bar { display: flex; gap: 10px; align-items: flex-start; margin: 22px 0 14px; padding: 12px 14px;
+                  border: 1px solid rgba(251,113,133,.4); border-radius: 12px;
+                  background: rgba(251,113,133,.08); color: #fb7185; font-size: .88em; line-height: 1.7; }
+      .risk-bar svg { flex-shrink: 0; margin-top: 3px; }
+      .troubleshoot { margin: 0 0 22px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--card); }
+      .troubleshoot summary { cursor: pointer; padding: 12px 14px; font-weight: 600; font-size: .92em;
+                             list-style: none; display: flex; justify-content: space-between; align-items: center; }
+      .troubleshoot summary::-webkit-details-marker { display: none; }
+      .troubleshoot .ts-arrow { transition: transform .2s; opacity: .5; }
+      .troubleshoot[open] .ts-arrow { transform: rotate(180deg); }
+      .troubleshoot .ts-lead { margin: 0 14px 8px; font-size: .85em; opacity: .6; }
+      .troubleshoot ul { margin: 0; padding: 0 14px 14px 32px; font-size: .88em; line-height: 1.9; opacity: .85; }
+      .pn-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 22px; }
+      .pn { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--card-border);
+            border-radius: 12px; text-decoration: none; background: var(--card); min-height: 44px; }
+      .pn.next { text-align: right; }
+      .pn-label { font-size: .72em; opacity: .5; }
+      .pn-title { font-size: .9em; font-weight: 600; color: var(--ink); }
+      /* 提示词一键复制卡 */
+      article blockquote { position: relative; margin: 14px 0; padding: 14px 16px; border-radius: 12px;
+            border: 1.5px solid var(--accent, #fbbf24); background: var(--card); cursor: pointer;
+            -webkit-user-select: none; user-select: none; transition: transform .12s; }
+      article blockquote:active { transform: scale(.985); }
+      article blockquote::before { content: attr(data-copy-hint); position: absolute; top: -9px; right: 12px;
+            font-size: .68em; padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+            background: var(--accent, #fbbf24); color: #0a0a0f; font-weight: 700; }
+      article blockquote.copied::before { content: attr(data-copied-text); }
+      article blockquote p { margin: 0; -webkit-user-select: text; user-select: text; }
     </style>
     <script is:inline>
       (function () {
         var saved = localStorage.getItem('wcad-theme');
         var sys = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         document.documentElement.dataset.theme = saved || sys;
+      })();
+      (function () {
+        var COPY_HINT = window.__COPY.hint, COPY_OK = window.__COPY.ok;
+      // 提示词一键复制
+      document.querySelectorAll('article blockquote').forEach(function (bq) {
+        bq.setAttribute('data-copy-hint', COPY_HINT);
+        bq.setAttribute('data-copied-text', COPY_OK);
+        bq.addEventListener('click', function () {
+          var text = bq.innerText.replace(COPY_HINT, '').replace(COPY_OK, '').trim();
+          function done() { bq.classList.add('copied'); setTimeout(function () { bq.classList.remove('copied'); }, 1800); }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done);
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta); done();
+          }
+        });
+      });
       })();
     </script>
     <meta property="og:image" content="https://what-can-ai-do.pages.dev/og-card.jpg" />
@@ -92,11 +139,32 @@ const { Content } = await render(task);
     </div>
     <div class="headline">
       <p class="tagline">{task.data.tagline}</p>
-      <button class="share-btn" id="share-btn" data-ok={ui.shareOk}>{ui.shareLabel}</button>
+      <button class="share-btn" id="share-btn" data-ok={ui.shareOk} data-copy-hint={ui.promptCopyHint} data-copy-ok={ui.promptCopyOk}>{ui.shareLabel}</button>
     </div>
     <article>
       <Content />
     </article>
+    <div class="risk-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+      <span>{ui.riskBar}</span>
+    </div>
+    <details class="troubleshoot">
+      <summary>{ui.troubleshootTitle}<span class="ts-arrow" aria-hidden="true">▾</span></summary>
+      <p class="ts-lead">{ui.troubleshootLead}</p>
+      <ul>
+        {ui.troubleshootItems.map((item) => <li set:html={item} />)}
+      </ul>
+    </details>
+    <nav class="pn-nav" aria-label="案例翻页">
+      <a class="pn prev" href={`../${prev.id.replace(/\.md$/, '')}/`}>
+        <span class="pn-label">{ui.prevLabel}</span>
+        <span class="pn-title">{prev.data.title ?? prev.id}</span>
+      </a>
+      <a class="pn next" href={`../${next.id.replace(/\.md$/, '')}/`}>
+        <span class="pn-label">{ui.nextLabel}</span>
+        <span class="pn-title">{next.data.title ?? next.id}</span>
+      </a>
+    </nav>
     <hr />
     <p class="footnote">
       {ui.footnote}
@@ -117,6 +185,7 @@ const { Content } = await render(task);
     <script is:inline>
       (function () {
         var btn = document.getElementById('share-btn');
+        window.__COPY = { hint: btn.dataset.copyHint, ok: btn.dataset.copyOk };
         var OK = btn.dataset.ok;
         function done() { var t = btn.textContent; btn.textContent = OK; setTimeout(function(){ btn.textContent = t; }, 1800); }
         btn.addEventListener('click', function () {
@@ -132,6 +201,25 @@ const { Content } = await render(task);
             document.execCommand('copy'); document.body.removeChild(ta); done();
           }
         });
+      })();
+      (function () {
+        var COPY_HINT = window.__COPY.hint, COPY_OK = window.__COPY.ok;
+      // 提示词一键复制
+      document.querySelectorAll('article blockquote').forEach(function (bq) {
+        bq.setAttribute('data-copy-hint', COPY_HINT);
+        bq.setAttribute('data-copied-text', COPY_OK);
+        bq.addEventListener('click', function () {
+          var text = bq.innerText.replace(COPY_HINT, '').replace(COPY_OK, '').trim();
+          function done() { bq.classList.add('copied'); setTimeout(function () { bq.classList.remove('copied'); }, 1800); }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done);
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta); done();
+          }
+        });
+      });
       })();
     </script>
     <script is:inline>

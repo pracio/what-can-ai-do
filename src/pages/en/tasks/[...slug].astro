@@ -4,13 +4,18 @@ import TaskPage from '../../../components/TaskPage.astro';
 
 export async function getStaticPaths() {
   const tasks = await getCollection('tasksEn');
-  return tasks.map((task) => ({
+  const ordered = [...tasks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || a.id.localeCompare(b.id));
+  return ordered.map((task, i) => ({
     params: { slug: task.id.replace(/\.md$/, '') },
-    props: { task },
+    props: {
+      task,
+      prev: i > 0 ? ordered[i - 1] : ordered[ordered.length - 1],
+      next: i < ordered.length - 1 ? ordered[i + 1] : ordered[0],
+    },
   }));
 }
 
-const { task } = Astro.props;
+const { task, prev, next } = Astro.props;
 const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 const ui = {
   backLabel: '← All walkthroughs',
@@ -22,7 +27,20 @@ const ui = {
   pendingBadge: 'Not yet verified on a real device',
   shareLabel: 'Share this',
   shareOk: 'Link copied ✓',
+  promptCopyHint: 'Tap to copy',
+  promptCopyOk: 'Copied — go paste it ✓',
+  troubleshootTitle: "Didn't work?",
+  troubleshootLead: 'Four causes cover most failures:',
+  troubleshootItems: [
+    "AI not responding or spinning forever: wait a bit, or close and reopen the app",
+    "Image not recognized: check the photo actually sent (you should see the thumbnail in the chat)",
+    "Bad result: try a clearer photo, or send one of the follow-up lines from the guide",
+    "Rate limit hit: the guide usually lists a free alternative — switch to that",
+  ],
+  riskBar: "Reminder: content goes to the AI's servers. IDs, bank cards, passwords — never send those.",
+  prevLabel: '← Previous case',
+  nextLabel: 'Next case →',
   htmlLang: 'en',
 };
 ---
-<TaskPage task={task} ui={ui} />
+<TaskPage task={task} ui={ui} prev={prev} next={next} />

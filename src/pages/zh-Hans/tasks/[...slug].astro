@@ -4,13 +4,18 @@ import TaskPage from '../../../components/TaskPage.astro';
 
 export async function getStaticPaths() {
   const tasks = await getCollection('tasks');
-  return tasks.map((task) => ({
+  const ordered = [...tasks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || a.id.localeCompare(b.id));
+  return ordered.map((task, i) => ({
     params: { slug: task.id.replace(/\.md$/, '') },
-    props: { task },
+    props: {
+      task,
+      prev: i > 0 ? ordered[i - 1] : ordered[ordered.length - 1],
+      next: i < ordered.length - 1 ? ordered[i + 1] : ordered[0],
+    },
   }));
 }
 
-const { task } = Astro.props;
+const { task, prev, next } = Astro.props;
 const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 const ui = {
   backLabel: '← 返回所有任务',
@@ -22,7 +27,20 @@ const ui = {
   pendingBadge: '路径待真机验证',
   shareLabel: '分享给需要的人',
   shareOk: '已复制链接 ✓',
+  promptCopyHint: '点一下复制',
+  promptCopyOk: '已复制，去粘贴 ✓',
+  troubleshootTitle: '没成功？看这里',
+  troubleshootLead: '大部分失败是这四个原因：',
+  troubleshootItems: [
+    "AI 没反应或一直转圈：等一会儿再试，或把 App 划掉重开",
+    "识别不了图片：确认照片真的发出去了（对话框里能看到缩略图）",
+    "效果太差：换张更清楚的照片，或按教程里的追问句式再发一句",
+    "提示次数用完：教程里一般给了备选工具，换一个免费的",
+  ],
+  riskBar: '提醒：内容会发给 AI 的服务器。身份证、银行卡、密码，永远不要发。',
+  prevLabel: '← 上一个案例',
+  nextLabel: '下一个案例 →',
   htmlLang: 'zh-Hans',
 };
 ---
-<TaskPage task={task} ui={ui} />
+<TaskPage task={task} ui={ui} prev={prev} next={next} />
