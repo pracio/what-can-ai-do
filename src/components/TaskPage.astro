@@ -13,6 +13,7 @@ export type TaskPageUI = {
   htmlLang: string;
 };
 
+const TRIO_SLUGS = new Set(['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam']);
 const { task, ui } = Astro.props;
 const { Content } = await render(task);
 ---
@@ -20,7 +21,22 @@ const { Content } = await render(task);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{task.data.task_id} — What Can AI Do?</title>
+    <title>{task.data.title} — What Can AI Do?</title>
+    <meta name="description" content={task.data.tagline} />
+    <link rel="canonical" href={`https://what-can-ai-do.pages.dev${Astro.url.pathname}`} />
+    {TRIO_SLUGS.has(task.data.task_id) && (
+      <>
+        <link rel="alternate" hreflang="zh-Hans" href={`https://what-can-ai-do.pages.dev/zh-Hans/tasks/${task.data.task_id}/`} />
+        <link rel="alternate" hreflang="zh-Hant" href={`https://what-can-ai-do.pages.dev/zh-Hant/tasks/${task.data.task_id}/`} />
+        <link rel="alternate" hreflang="en" href={`https://what-can-ai-do.pages.dev/en/tasks/${task.data.task_id}/`} />
+      </>
+    )}
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={task.data.title} />
+    <meta property="og:description" content={task.data.tagline} />
+    <meta property="og:url" content={`https://what-can-ai-do.pages.dev${Astro.url.pathname}`} />
+    <meta property="og:site_name" content="What Can AI Do?" />
+    <meta name="twitter:card" content="summary" />
     <style is:global>
       :root {
         --bg: #08080c; --ink: #f2f2f7; --ink-dim: rgba(242,242,247,.65); --ink-faint: rgba(242,242,247,.45);
