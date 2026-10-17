@@ -1,0 +1,2 @@
+/tasks/* /zh-Hans/tasks/:splat 301
+/about/* /zh-Hans/about/:splat 301

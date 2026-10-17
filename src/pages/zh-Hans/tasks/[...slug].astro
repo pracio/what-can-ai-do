@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import TaskPage from '../../components/TaskPage.astro';
+import TaskPage from '../../../components/TaskPage.astro';
 
 export async function getStaticPaths() {
   const tasks = await getCollection('tasks');
@@ -14,7 +14,7 @@ const { task } = Astro.props;
 const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 const ui = {
   backLabel: '← 返回所有任务',
-  homeHref: `${B}/`,
+  homeHref: `${B}/zh-Hans/`,
   themeBtn: '☀︎/☾ 切换',
   themeAria: '切换亮色暗色',
   footnote: '指数说明：一句话指数=你要对 AI 说多少话才能达到理想效果；折腾指数=搭环境要装多少东西；风险指数=搞砸了有多大代价。',

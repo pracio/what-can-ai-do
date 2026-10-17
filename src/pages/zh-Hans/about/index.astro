@@ -1,5 +1,5 @@
 ---
-const B = import.meta.env.BASE_URL;
+const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 ---
 <html lang="zh-Hans">
   <head>
@@ -80,7 +80,7 @@ const B = import.meta.env.BASE_URL;
         <p class="small">案例入选标准：免费能做、多数人用得上、你真的做过一次。</p>
       </section>
 
-      <p class="backlink"><a href={`${B}/`}>← 回到案例</a></p>
+      <p class="backlink"><a href={`${B}/zh-Hans/`}>← 回到案例</a></p>
     </div>
     <script is:inline>
       document.getElementById('theme-btn').addEventListener('click', function () {

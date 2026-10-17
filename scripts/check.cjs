@@ -35,7 +35,7 @@ const VIEWPORTS = [
 
   for (const vp of VIEWPORTS) {
     const page = await browser.newPage({ viewport: { width: vp.w, height: vp.h }, deviceScaleFactor: 2 });
-    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    await page.goto(BASE + '/zh-Hans/', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1500);
 
     // 1. 占位符泄漏
@@ -47,9 +47,8 @@ const VIEWPORTS = [
     if (hasSubpath) {
       const absPaths = await page.evaluate(() => {
         const bad = [];
-        document.querySelectorAll('img[src^="/"], a[href^="/tasks"]').forEach(el => {
-          const v = el.src || el.getAttribute('href');
-          if (!v.includes(location.pathname.split('/')[1] || '~')) bad.push(v);
+        document.querySelectorAll('a[href^="/tasks"], a[href^="/about"]').forEach(el => {
+          bad.push(el.getAttribute('href'));
         });
         return bad;
       });
@@ -114,7 +113,7 @@ const VIEWPORTS = [
     check(`[${vp.name}] 详情页无占位符泄漏`, detailLeaks.length === 0, detailLeaks.join(',') || 'clean');
 
     // 6.8 about页占位链接(上线前必须替换FEEDBACK_URL_PLACEHOLDER)
-    const aboutRes = await page.request.get(BASE + '/about/');
+    const aboutRes = await page.request.get(BASE + '/zh-Hans/about/');
     const aboutText = await aboutRes.text();
     const ph = /FEEDBACK_URL_PLACEHOLDER|mailto:hello@example\.com/.test(aboutText);
     check(`[${vp.name}] about页无占位链接`, !ph, ph ? '有PLACEHOLDER(评审期可放行, 上线前必换)' : 'clean');
