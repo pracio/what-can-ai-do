@@ -345,6 +345,16 @@ const cards = tasks
       .slide.active .head, .slide.active .steps,
       .slide.active .indices-line, .slide.active .open { animation: none !important; opacity: 1; }
     }
+  .finale { display: flex; align-items: center; justify-content: center; }
+  .finale-box { max-width: 300px; text-align: center; padding: 0 8px; }
+  .finale-kicker { font-size: 11px; letter-spacing: .3em; opacity: .5; margin: 0 0 10px; }
+  .finale-title { font-size: 34px; margin: 0 0 14px; }
+  .finale-text { font-size: 14px; line-height: 1.8; opacity: .8; margin: 0 0 22px; }
+  .finale-cta { display: inline-block; margin: 0 0 14px; padding: 12px 22px; border-radius: 999px;
+         background: linear-gradient(120deg, #fbbf24, #fb7185); color: #0a0a0f;
+         font-weight: 700; text-decoration: none; font-size: 14px; }
+  .finale-share { display: block; margin: 0 auto; border: none; background: none; color: inherit;
+           opacity: .6; font-size: 12.5px; text-decoration: underline; cursor: pointer; font-family: inherit; }
   </style>
 </head>
 <body>
@@ -409,6 +419,17 @@ const cards = tasks
         <a class="open" href={`${B}/zh-Hant/tasks/${c.slug}/`}>完整教學 <span aria-hidden="true">→</span></a>
       </section>
     ))}
+
+      <section class="slide finale" data-finale style="--accent:#fbbf24;--accent2:#fb7185">
+        <div class="glow"></div>
+        <div class="finale-box">
+          <p class="finale-kicker">看完了</p>
+          <h1 class="finale-title">換你了</h1>
+          <p class="finale-text">挑一個案例，今天就在手機上試一次。真的做成了？告訴我們，你的案例會登上牆，幫到下一個人。</p>
+          <a class="finale-cta" href="https://github.com/pracio/what-can-ai-do/issues" target="_blank" rel="noopener">投稿你的案例 →</a>
+          <button class="finale-share" id="finale-share">轉給那位說「AI 不就是拿來聊天嗎」的朋友</button>
+        </div>
+      </section>
   </div>
 
   <button class="arrow l" id="prev" aria-label="上一个">←</button>
@@ -428,7 +449,7 @@ const cards = tasks
       const accent = slides[cur].style.getPropertyValue('--accent');
       document.documentElement.style.setProperty('--accent-live', accent);
       // hero不计入案例号: hero时案例号显示 00, 进度条按 (cur)/(total-1) 起步为0
-      counter.textContent = String(cur).padStart(2, '0');
+      counter.textContent = String(Math.min(cur, slides.length - 2)).padStart(2, '0');
       document.getElementById('counter').style.opacity = isHero ? '.45' : '';
       slides.forEach((s, i) => {
         s.style.transform = ''; s.style.opacity = ''; s.style.visibility = '';
@@ -437,7 +458,15 @@ const cards = tasks
       fill.style.width = (cur / (slides.length - 1) * 100).toFixed(1) + '%';
     }
 
-    (window as any).__wcadGo = go; // 测试/调试钩子
+    (window as any).__wcadGo = go;
+    // 末屏分享
+    var fs = document.getElementById('finale-share');
+    if (fs) fs.addEventListener('click', function () {
+      var url = location.origin + 'zh-Hant/';
+      if (navigator.share) { navigator.share({ title: document.title, url: url }).catch(function(){}); }
+      else if (navigator.clipboard) { navigator.clipboard.writeText(url).then(function(){ var t = fs.textContent; fs.textContent = '已複製 ✓'; setTimeout(function(){ fs.textContent = t; }, 1800); }); }
+    });
+ // 测试/调试钩子
     function go(i: number) {
       cur = Math.max(0, Math.min(slides.length - 1, i));
       render();

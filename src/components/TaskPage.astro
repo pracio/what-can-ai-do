@@ -11,6 +11,8 @@ export type TaskPageUI = {
   lastTested: string;
   pendingBadge: string;
   htmlLang: string;
+  shareLabel: string;
+  shareOk: string;
 };
 
 const TRIO_SLUGS = new Set(['restore-old-photo', 'summarize-doc', 'tutoring-kids', 'agent-research-report', 'spot-scam']);
@@ -83,6 +85,10 @@ const { Content } = await render(task);
       <a class="back" href={ui.homeHref}>{ui.backLabel}</a>
       <button class="theme-btn" id="theme-btn" aria-label={ui.themeAria}>{ui.themeBtn}</button>
     </div>
+    <div class="headline">
+      <p class="tagline">{task.data.tagline}</p>
+      <button class="share-btn" id="share-btn" data-ok={ui.shareOk}>{ui.shareLabel}</button>
+    </div>
     <article>
       <Content />
     </article>
@@ -96,6 +102,33 @@ const { Content } = await render(task);
         <span class="badge">{ui.pendingBadge}</span>
       )}
     </p>
+    <style>
+      .headline { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 4px 0 14px; }
+      .tagline { font-size: 1.05em; font-weight: 600; color: var(--ink); opacity: .85; margin: 0; flex: 1; }
+      .share-btn { flex-shrink: 0; border: 1px solid var(--card-border); background: var(--card); color: var(--ink-dim);
+                   border-radius: 999px; padding: 7px 14px; font-size: .85em; cursor: pointer; font-family: inherit; }
+      .share-btn:active { transform: scale(.97); }
+    </style>
+    <script is:inline>
+      (function () {
+        var btn = document.getElementById('share-btn');
+        var OK = btn.dataset.ok;
+        function done() { var t = btn.textContent; btn.textContent = OK; setTimeout(function(){ btn.textContent = t; }, 1800); }
+        btn.addEventListener('click', function () {
+          var title = document.title;
+          var url = location.href;
+          if (navigator.share) {
+            navigator.share({ title: title, url: url }).then(done).catch(function () {});
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(done);
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = url; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta); done();
+          }
+        });
+      })();
+    </script>
     <script is:inline>
       document.getElementById('theme-btn').addEventListener('click', function () {
         var cur = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
