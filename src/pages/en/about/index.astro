@@ -1,0 +1,93 @@
+---
+const B = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About · What Can AI Do?</title>
+    <style>
+      :root {
+        --bg: #0a0a0f; --ink: #fff; --ink-80: rgba(255,255,255,.8);
+        --card: rgba(255,255,255,.05); --card-border: rgba(255,255,255,.1);
+      }
+      [data-theme="light"] {
+        --bg: #f7f7fa; --ink: #1a1a22; --ink-80: rgba(26,26,34,.78);
+        --card: rgba(255,255,255,.72); --card-border: rgba(26,26,34,.1);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; transition: background .3s, color .3s;
+             background-image: radial-gradient(1200px 600px at 50% -10%, rgba(251,191,36,.08), transparent); }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 48px 20px 56px; }
+      .topline { display: flex; justify-content: space-between; align-items: center; }
+      .brand { font-size: 11px; letter-spacing: .3em; opacity: .5; margin-bottom: 22px; }
+      h1 { font-size: 26px; margin: 0 0 20px; letter-spacing: .02em; }
+      .card { background: var(--card); border: 1px solid var(--card-border);
+              backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+              border-radius: 18px; padding: 18px 20px; margin-bottom: 14px; }
+      h2 { font-size: 15px; margin: 0 0 10px; opacity: .92; }
+      p, li { font-size: 14px; line-height: 1.8; color: var(--ink-80); margin: 6px 0; }
+      ul { padding-left: 20px; margin: 0; }
+      .cta { display: inline-block; margin: 10px 0 2px; padding: 11px 20px; border-radius: 999px;
+             background: linear-gradient(120deg, #fbbf24, #fb7185); color: #0a0a0f;
+             font-weight: 700; text-decoration: none; font-size: 14px; }
+      .small { font-size: 12px; opacity: .55; }
+      a:not(.cta) { color: #93c5fd; }
+      .backlink { margin-top: 20px; } .backlink a { font-size: 13px; opacity: .7; }
+      .theme-btn { border: 1px solid var(--card-border); background: var(--card); color: var(--ink-80);
+                   border-radius: 999px; padding: 3px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+    </style>
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('wcad-theme');
+        var sys = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.dataset.theme = saved || sys;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topline">
+        <div class="brand">WHAT CAN AI DO?</div>
+        <button class="theme-btn" id="theme-btn" aria-label="Toggle light and dark">☀︎/☾ Theme</button>
+      </div>
+      <h1>About this site</h1>
+
+      <section class="card">
+        <h2>What this is</h2>
+        <p>A <b>living manual</b>: 20 real-life situations showing what today's free AI can do, how to ask for it, and where not to trust it. Every case comes with a prompt you can copy and use as-is.</p>
+        <p>We start with "asking AI on your phone" and end with "AI doing the work for you." Most people only use the first half. The second half is where the time savings are.</p>
+      </section>
+
+      <section class="card">
+        <h2>Why it's free</h2>
+        <p>This is a non-commercial project. The cases, walkthroughs, and prompts cost nothing, and there are no plans to sell courses. Knowing how to use AI shouldn't be a privilege for the few.</p>
+      </section>
+
+      <section class="card">
+        <h2>Get involved</h2>
+        <ul>
+          <li><b>Report a problem</b> — if a case is wrong, confusing, or doesn't work on your phone, tell us</li>
+          <li><b>Submit a case</b> — what have you actually done with AI? If you've really done it and our review checks out, it goes up. Your name or anonymous, either way</li>
+          <li><b>Share</b> — send this to the relative who says "isn't AI just for chatting?" That's who this site is for</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Contact</h2>
+        <p>Feedback and submissions (takes one minute):</p>
+        <a class="cta" href="https://github.com/pracio/what-can-ai-do/issues" target="_blank" rel="noopener">Feedback / Submit a case (GitHub Issue) →</a>
+        <p class="small">A case gets in when it's free to do, useful to most people, and you've actually done it once yourself.</p>
+      </section>
+
+      <p class="backlink"><a href={`${B}/en/`}>← Back to the cases</a></p>
+    </div>
+    <script is:inline>
+      document.getElementById('theme-btn').addEventListener('click', function () {
+        var cur = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = cur;
+        localStorage.setItem('wcad-theme', cur);
+      });
+    </script>
+  </body>
+</html>
