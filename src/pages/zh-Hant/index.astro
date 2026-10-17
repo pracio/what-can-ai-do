@@ -462,7 +462,7 @@ const cards = tasks
     // 末屏分享
     var fs = document.getElementById('finale-share');
     if (fs) fs.addEventListener('click', function () {
-      var url = location.origin + 'zh-Hant/';
+      var url = location.origin + '/zh-Hant/';
       if (navigator.share) { navigator.share({ title: document.title, url: url }).catch(function(){}); }
       else if (navigator.clipboard) { navigator.clipboard.writeText(url).then(function(){ var t = fs.textContent; fs.textContent = '已複製 ✓'; setTimeout(function(){ fs.textContent = t; }, 1800); }); }
     });
