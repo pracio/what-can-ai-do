@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { TOOL_META } from '../icons/tool-meta';
 
 // 多语言详情页模板。i18n 文案集中在 UI 常量里，三语壳各传一份
 export type TaskPageUI = {
@@ -13,6 +14,8 @@ export type TaskPageUI = {
   htmlLang: string;
   shareLabel: string;
   shareOk: string;
+  toolsLabel?: string;
+  toolsLead?: string;
 };
 
 import { trioSlugs } from '../lib/slug-registry';
@@ -142,6 +145,24 @@ const { Content } = await render(task);
       <p class="tagline">{task.data.tagline}</p>
       <button class="share-btn" id="share-btn" data-ok={ui.shareOk} data-copy-hint={ui.promptCopyHint} data-copy-ok={ui.promptCopyOk}>{ui.shareLabel}</button>
     </div>
+    {task.data.paths?.length > 0 && (
+      <div class="tools-bar">
+        <span class="tools-label">{ui.toolsLabel ?? 'Tools'}</span>
+        <div class="tools-list">
+          {task.data.paths.map((p) => {
+            const meta = TOOL_META[p.tool];
+            if (!meta) return null;
+            return (
+              <a class="tool-chip" href={meta.url} target="_blank" rel="noopener">
+                <img src={meta.icon} alt="" width="20" height="20" />
+                <span class="tool-name">{meta.name}</span>
+                <span class="tool-arrow">↗</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    )}
     <article>
       <Content />
     </article>
@@ -177,6 +198,18 @@ const { Content } = await render(task);
       )}
     </p>
     <style>
+      .tools-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+                   margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--card-border);
+                   border-radius: 12px; background: var(--card); }
+      .tools-label { font-size: .78em; opacity: .55; flex-shrink: 0; }
+      .tools-list { display: flex; gap: 8px; flex-wrap: wrap; }
+      .tool-chip { display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+                   border: 1px solid var(--card-border); border-radius: 999px; padding: 4px 10px 4px 6px;
+                   background: var(--bg); transition: transform .12s; }
+      .tool-chip:active { transform: scale(.97); }
+      .tool-chip img { border-radius: 5px; display: block; }
+      .tool-name { font-size: .85em; font-weight: 600; color: var(--ink); }
+      .tool-arrow { font-size: .75em; opacity: .45; }
       .headline { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 4px 0 14px; }
       .tagline { font-size: 1.05em; font-weight: 600; color: var(--ink); opacity: .85; margin: 0; flex: 1; }
       .share-btn { flex-shrink: 0; border: 1px solid var(--card-border); background: var(--card); color: var(--ink-dim);
