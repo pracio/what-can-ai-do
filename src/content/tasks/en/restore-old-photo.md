@@ -9,6 +9,7 @@ domains: [Life, Creative]
 type: chat
 last_tested: pending
 related: [colorize-old-photo, animate-old-photo, organize-photos-agent]
+
 title: "AI can restore old photos"
 tagline: "Faded and blurry → sharp and in color, in 5 minutes"
 accent: "#fbbf24"

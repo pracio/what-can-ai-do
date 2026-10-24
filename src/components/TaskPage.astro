@@ -19,6 +19,7 @@ export type TaskPageUI = {
   typeChat: string;
   typeAgent: string;
   relatedLabel: string;
+  sourcesLabel: string;
 };
 
 import { trioSlugs } from '../lib/slug-registry';
@@ -112,6 +113,11 @@ const rgb = [0, 2, 4].map(i => parseInt(accent.slice(1).slice(i, i + 2), 16)).jo
       .related-card:hover { border-color: var(--accent); }
       .related-title { font-weight: 600; font-size: .92em; color: var(--ink); }
       .related-tag { font-size: .8em; opacity: .6; }
+      .sources-nav { margin: 0 0 18px; }
+      .sources-lead { margin: 0 0 8px; font-size: .8em; opacity: .55; }
+      .sources-list { margin: 0; padding: 0 0 0 18px; font-size: .85em; line-height: 1.9; }
+      .sources-list a { color: var(--accent); }
+      .src-note { opacity: .6; }
       .pn-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 22px; }
       .pn { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--card-border);
             border-radius: 12px; text-decoration: none; background: var(--card); min-height: 44px; }
@@ -233,6 +239,19 @@ const rgb = [0, 2, 4].map(i => parseInt(accent.slice(1).slice(i, i + 2), 16)).jo
         <span class="pn-title">{next.data.title ?? next.id}</span>
       </a>
     </nav>
+    {task.data.sources?.length > 0 && (
+      <nav class="sources-nav" aria-label={ui.sourcesLabel}>
+        <p class="sources-lead">{ui.sourcesLabel}</p>
+        <ul class="sources-list">
+          {task.data.sources.map((src) => (
+            <li>
+              <a href={src.url} target="_blank" rel="noopener">{src.title}</a>
+              {src.note && <span class="src-note"> — {src.note}</span>}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
     <hr />
     <p class="footnote">
       {ui.footnote}

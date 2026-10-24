@@ -29,6 +29,12 @@ const taskSchema = z.object({
   type: z.string().default('chat'),
   last_tested: z.string().default('pending'),
   related: z.array(z.string()).default([]),
+  // 引用来源: 报道/亲历文章, 详情页尾部"依据与延伸阅读"渲染
+  sources: z.array(z.object({
+    title: z.string(),
+    url: z.string().url(),
+    note: z.string().optional(),
+  })).default([]),
 });
 
 const tasks = defineCollection({
