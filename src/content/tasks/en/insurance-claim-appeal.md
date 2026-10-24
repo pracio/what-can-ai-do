@@ -20,7 +20,7 @@ steps:
     text: "Collect three things: the denial letter, the relevant part of your policy (the PDF you got at signup), and any emails or call notes about the claim"
   - n: "2"
     text: "Upload them to {{chatgpt}} or {{gemini}} and send:"
-    prompt: "My insurance claim was denied. Here are the denial letter and my policy document. First, tell me exactly which policy wording the denial is based on. Then tell me: does that wording actually say what the denial letter claims? List every part of the policy that supports my claim being covered, quote the exact sentences, and explain them in plain language."
+    prompt: "My claim was denied. Here are the denial letter and my policy. Which policy wording is the denial based on, and does it actually say that? List every part of the policy that supports coverage, quoting exact sentences."
   - n: "3"
     text: "Read the analysis, correct anything that misquotes your documents, then:"
     prompt: "Now draft my appeal. Use the insurer's appeal address from the denial letter. State the facts, quote the policy language that supports coverage, respond to each reason they gave for denying, and keep the tone factual and calm. Leave a blank for my signature."
@@ -44,7 +44,11 @@ indicesText:
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
 1. Get the **denial letter** (it must list the reason and your appeal rights), your **policy document**, and any notes from calls with the insurer. If your policy is dozens of pages, upload the whole thing; these models handle long documents
-2. Send the first prompt above. The key move is making AI quote exact sentences. Paraphrased policy language is where errors creep in; quoted text you can check against the PDF
+2. Send this prompt:
+
+> My insurance claim was denied. Here are the denial letter and my policy document. First, tell me exactly which policy wording the denial is based on. Then tell me: does that wording actually say what the denial letter claims? List every part of the policy that supports my claim being covered, quote the exact sentences, and explain them in plain language.
+
+The key move is making AI quote exact sentences. Paraphrased policy language is where errors creep in; quoted text you can check against the PDF
 3. **Verify the quotes.** Search the PDF (Ctrl+F) for the sentences it cited. If a quote doesn't exist, tell it: "That sentence isn't in my policy. Only cite sentences you can point to"
 4. Send the second prompt to get the appeal letter. Add your state if the denial might hinge on a state-specific rule: "I live in [state]; note any state insurance rules that apply"
 5. Submit through the channel the denial letter specifies, before the deadline. Keep a copy of everything

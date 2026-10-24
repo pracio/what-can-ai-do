@@ -18,10 +18,10 @@ order: 11
 steps:
   - n: "1"
     text: "Photograph or upload the lease into {{chatgpt}} or {{gemini}} (before signing, not after):"
-    prompt: "This is my apartment lease. Explain it in plain language. List separately: every fee and when it's charged, every condition that could cost me my security deposit, what happens if I break the lease early, and anything unusual compared to a standard lease. Quote the exact clause for each point."
+    prompt: "Explain my lease in plain language. List separately: every fee, every condition that could cost me my deposit, and the early-exit terms. Quote the exact clause for each."
   - n: "2"
     text: "Moving out, use it again on the deposit:"
-    prompt: "I'm moving out on [date]. The lease says deposits are returned within [X] days with an itemized list of deductions. My landlord hasn't responded in [X] days / deducted $[amount] for [item]. Draft a polite letter citing my lease's own move-out clause and asking for [the full deposit / an itemized deduction list] by [date]."
+    prompt: "I'm moving out on [date]. My landlord hasn't returned my deposit / deducted $[amount] for [item]. Draft a polite letter citing my lease's move-out clause, asking for [the deposit / an itemized list] by [date]."
   - n: "3"
     text: "Take dated photos at move-in and move-out. The photos beat any letter when deductions get disputed"
 indicesText:
@@ -43,10 +43,16 @@ indicesText:
 
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
-1. **Before signing**, upload the lease and send the first prompt. The "list separately" part matters: buried in a summary, a $15/month "admin fee" disappears; on its own line, you can ask the landlord to remove it
+1. **Before signing**, upload the lease and send this prompt:
+
+> This is my apartment lease. Explain it in plain language. List separately: every fee and when it's charged, every condition that could cost me my security deposit, what happens if I break the lease early, and anything unusual compared to a standard lease. Quote the exact clause for each point.
+
+The "list separately" part matters: buried in a summary, a $15/month "admin fee" disappears; on its own line, you can ask the landlord to remove it
 2. Ask follow-ups on anything that matters to you: "What exactly counts as 'normal wear and tear' here?" "If my roommate leaves, am I liable for their share?" Quote-based answers let you verify against the PDF
 3. **At move-in, photograph everything, dated.** Walls, appliances, carpets, existing damage. This is the deposit's insurance policy and it takes ten minutes
-4. **Moving out**, give notice exactly as the lease requires (the AI can tell you what your lease requires), clean, photograph again, then send the second prompt if the deposit is late or deductions look wrong
+4. **Moving out**, give notice exactly as the lease requires (the AI can tell you what your lease requires), clean, photograph again, then send this if the deposit is late or deductions look wrong:
+
+> I'm moving out on [date]. The lease says deposits are returned within [X] days with an itemized list of deductions. My landlord hasn't responded in [X] days / deducted $[amount] for [item]. Draft a polite letter citing my lease's own move-out clause and asking for [the full deposit / an itemized deduction list] by [date].
 
 ### The deposit letter, and where it stops
 

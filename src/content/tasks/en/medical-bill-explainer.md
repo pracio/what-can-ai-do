@@ -27,7 +27,7 @@ steps:
     text: "Request an itemized bill from the provider (a patient portal usually has it). Download your EOB from the insurer's site. You need both"
   - n: "2"
     text: "Upload both to {{chatgpt}} or {{gemini}} and send this prompt:"
-    prompt: "Here are two documents: my itemized hospital bill and my insurance company's explanation of benefits (EOB). Compare them line by line. Flag every charge that is billed twice, charged above the allowed amount on the EOB, or for something I don't recognize. For each problem, quote the exact line from both documents and show the math. Then tell me which ones are worth disputing and what to say."
+    prompt: "Compare my itemized bill and my EOB line by line. Flag duplicate charges, charges above the allowed amount, and services I don't recognize. Quote both documents for each problem and show the math. Then tell me which ones are worth disputing."
   - n: "3"
     text: "It comes back with a list. Check each flagged line against the papers yourself, then ask for the dispute letter:"
     prompt: "Draft an appeal letter to my insurer about the duplicate charge, in the format they require. Keep it factual. Include the bill line numbers."
@@ -51,7 +51,11 @@ indicesText:
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
 1. Get an **itemized bill** from the hospital or clinic (patient portal, or call and ask; they must provide it) and your **EOB** from the insurer's site or app. The EOB is the document that says what the insurer allows, what they paid, and what's left for you
-2. Upload both files and send the prompt above. If the files are photos of paper, take them in good light, one page per photo
+2. Upload both files and send this prompt:
+
+> Compare my itemized hospital bill and my insurance company's explanation of benefits (EOB) line by line. Flag every charge that is billed twice, charged above the allowed amount on the EOB, or for something I don't recognize. For each problem, quote the exact line from both documents and show the math. Then tell me which ones are worth disputing and what to say.
+
+If the files are photos of paper, take them in good light, one page per photo
 3. For every flagged line, find it in the paper documents yourself. AI misreads scans sometimes, and a duplicate charge is a stronger dispute when you can point to both copies
 4. Ask for the appeal letter only after the list checks out. Insurers have their own format and deadlines, so add: "My insurer is [name], the claim number is [#], and the appeal deadline is [date]"
 

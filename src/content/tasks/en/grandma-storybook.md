@@ -20,7 +20,7 @@ steps:
     text: "Collect the raw material: the child's name and age, what they love (a purple bike, a dog named Biscuit, dinosaurs), where they live, and one thing that happened recently"
   - n: "2"
     text: "In {{chatgpt}} or {{gemini}}:"
-    prompt: "Write a bedtime story for a [age]-year-old named [name]. The hero is [name] and their dog [Biscuit], who live in [town]. The story should involve [what the kid loves], and the lesson is gently about [sharing / being brave / bedtime]. About 600 words, split into pages of about 50 words each. For each page, describe the illustration in one sentence so I can generate pictures."
+    prompt: "Write a bedtime story for [name], age [X], and their dog [Biscuit]. Include [what the kid loves]; the lesson is gently about [sharing]. About 600 words, pages of ~50 words, each page with a one-sentence illustration note."
   - n: "3"
     text: "Then one page at a time:"
     prompt: "Now make the illustration for page 1: [the scene description]. Style: warm, soft colors, children's picture book."
@@ -45,7 +45,9 @@ indicesText:
 
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
-1. **Details make the book.** "A story about a girl" produces wallpaper. "Lily, 5, who lost her first tooth this week and is worried the tooth fairy can't find apartments" produces a book she'll demand every night. Whatever you know that a store-bought book doesn't, use it
+1. **Details make the book.** "A story about a girl" produces wallpaper. "Lily, 5, who lost her first tooth this week and is worried the tooth fairy can't find apartments" produces a book she'll demand every night. Whatever you know that a store-bought book doesn't, use it:
+
+> Write a bedtime story for a [age]-year-old named [name]. The hero is [name] and their dog [Biscuit], who live in [town]. The story should involve [what the kid loves], and the lesson is gently about [sharing / being brave / bedtime]. About 600 words, split into pages of about 50 words each. For each page, describe the illustration in one sentence so I can generate pictures.
 2. Generate the story with page breaks and illustration notes first, **read the whole story**, fix anything ( pacing, scary parts, the lesson landing too hard), and only then make pictures. Words are cheap to redo; redoing pictures after finding a story problem wastes an evening
 3. Make illustrations one page at a time with the same style sentence repeated every time ("warm, soft colors, children's picture book"), or the look drifts between pages. Regenerate any picture that doesn't match
 4. **Print it.** PDF the pages, send to any print shop or pharmacy printing kiosk, cardstock for the cover. A laminated staple-bound book survives a four-year-old. Dedicated services will hardcover-bind it if you want a gift-grade copy

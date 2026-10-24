@@ -20,12 +20,12 @@ icon: diy-tool
 order: 16
 steps:
   - n: "1"
-    text: "Start from the small-game level (see build-game-with-kids), then install a coding agent: ChatGPT's Codex or Claude Code. This is the step where you stop making one file and start keeping a project"
+    text: "Install a coding agent (ChatGPT's Codex or Claude Code). This is where you stop making one file and start keeping a project"
   - n: "2"
     text: "Set the direction yourself; that's the job now:"
-    prompt: "We're building a small dungeon-crawler: top-down, retro look, one dungeon floor per session, loot that gets better as you go. I want it done in small playable steps: this week just walk and attack. Suggest what to build first, then wait for my go."
+    prompt: "Small dungeon-crawler: top-down, retro, better loot as you go. Build it in small playable steps: this week just walk and attack. Suggest what's first, then wait for my go."
   - n: "3"
-    text: "Daily loop: play, name what's wrong, ask for the fix, keep what works. When it breaks (it will):"
+    text: "Daily loop: play, name what's wrong, ask for the fix. When it breaks:"
     prompt: "After your last change, enemies stopped taking damage. Here's what I did since it last worked: [changes]. Find what broke and fix just that."
 indicesText:
   prompt: "You direct, it writes"

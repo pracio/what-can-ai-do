@@ -24,7 +24,7 @@ steps:
     text: "Screenshot everything while it happens: the delay notice in the airline's app, boarding passes, receipts for meals or a hotel you had to pay for, and any rebooking confirmations"
   - n: "2"
     text: "Tell the whole story to {{chatgpt}} or {{gemini}}:"
-    prompt: "My flight was [delayed X hours / cancelled / rerouted]. Here is what happened: [airlines involved, where you were flying, what the airline offered you, what you spent]. What am I entitled to from the airline: a refund, meal or hotel reimbursement, rebooking on another airline? Give me a checklist of what to claim, and tell me the exact words to use when I contact them."
+    prompt: "My flight was [delayed X hours / cancelled]. Airlines involved: [list]. What happened: [story]. What am I owed: refund, meal or hotel reimbursement, rebooking? Give me a claim checklist and the exact words to use."
   - n: "3"
     text: "If the airline's first answer is a form-letter refusal, go back with the receipts:"
     prompt: "They said no and pasted their policy. Here is their reply and here are my receipts. Draft a follow-up that cites their own policy wording and asks for a specific amount."
@@ -48,7 +48,11 @@ indicesText:
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
 1. **Collect evidence before you leave the airport.** Screenshots of the delay notice, your receipts, the rebooking confirmation. Claims go better with timestamps
-2. Tell the AI the full story in one message: airlines involved (including any partner airline the flight was actually operated by), the route, what went wrong, what you were offered, what you spent. Paste or upload the airline's carriage policy page if the first answer feels generic
+2. Tell the AI the full story in one message:
+
+> My flight was [delayed X hours / cancelled / rerouted]. Here is what happened: [airlines involved, where you were flying, what the airline offered you, what you spent]. What am I entitled to from the airline: a refund, meal or hotel reimbursement, rebooking on another airline? Give me a checklist of what to claim, and tell me the exact words to use when I contact them.
+
+Name any partner airline the flight was actually operated by, and paste or upload the airline's policy page if the first answer feels generic
 3. Send the claim through the airline's own channels: app chat, the refunds form on their site, or email. Use the AI's wording, but check the numbers in it against your receipts
 4. **If refused, escalate once with specifics.** One traveler's delayed codeshare flight bounced between airlines and claim companies until ChatGPT worked out which airline actually owed the compensation and what to say; the airline then paid $500 (self-reported on Hacker News; one story, not a promise)
 

@@ -24,7 +24,7 @@ steps:
     text: "Open the app's voice mode, then photograph the model label and the flashing error light. Speak while you show: \"It's a washing machine, this light is blinking, it won't drain\""
   - n: "2"
     text: "Follow one step at a time, narrating what you see and sending photos:"
-    prompt: "Walk me through fixing this one step at a time, cheapest and safest checks first. Wait for my photo or confirmation before the next step. Tell me to unplug it whenever that's needed, and stop me before anything that needs a professional: gas, mains wiring, sealed parts."
+    prompt: "Walk me through this one step at a time, safest checks first. Wait for my photo before the next step. Stop me before anything that needs a professional."
   - n: "3"
     text: "If the machine isn't recognized, find the manual PDF on the maker's site, upload it, and ask again"
 indicesText:
@@ -47,7 +47,11 @@ indicesText:
 ### Using ChatGPT voice mode (or [Google Gemini](https://gemini.google.com/))
 
 1. **Unplug the machine first** if the fix involves opening anything. Then open voice mode, show the camera the model label and the error light, and describe the symptom out loud
-2. Say the boundary out loud too, so it's in the conversation: "Don't let me do anything that needs a technician". This one sentence is what keeps a free repair from becoming a costly one
+2. Say the full boundary out loud too, so it's in the conversation:
+
+> Walk me through fixing this one step at a time, cheapest and safest checks first. Wait for my photo or confirmation before the next step. Tell me to unplug it whenever that's needed, and stop me before anything that needs a professional: gas, mains wiring, sealed parts.
+
+This one sentence is what keeps a free repair from becoming a costly one
 3. Work one step at a time and say what you see: "The filter cap is off, there's a coin and some lint". The back-and-forth is the point; a one-shot answer gives you a manual, the conversation gives you a guide that adapts when the photo surprises it
 4. One writer's washing machine flashed a drain error with a new machine already sitting in his online cart. ChatGPT walked him through opening the drain filter with a flathead screwdriver, draining it into a bowl, and clearing the debris. His verdict: "I did. It worked." A similar photo-first loop has saved diagnostic fees on cars (check-engine lights, photographed and described before the mechanic visit)
 

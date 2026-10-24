@@ -250,6 +250,8 @@ const cards = tasks
     }
     .prompt-quote:hover { border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: color-mix(in srgb, var(--accent) 12%, var(--quote-bg-hover)); }
     .prompt-quote.copied { border-style: solid; border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.08); }
+    /* 卡是速览: 长prompt截断到4行, 全文在详情页(How to节有完整引用块) */
+    .prompt-quote { overflow: hidden; max-height: calc(4 * 1.55em + 14px); mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); }
     
     /* 指数: 压成一行小字 */
     .indices-line {

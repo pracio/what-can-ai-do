@@ -20,7 +20,7 @@ steps:
     text: "Gather your file: order number, receipts, photos of the problem, and the dates of any calls or chats you already had"
   - n: "2"
     text: "In {{chatgpt}} or {{gemini}}, use the deep research or agent mode if your plan has it:"
-    prompt: "I bought [item] from [company] on [date] and [what went wrong]. I've spent [amount]. Before you write anything: research this company's written warranty, return window, and documented complaints process. Then draft a complaint email that cites their own policy, states the specific remedy I want [refund / repair / replacement], sets a reply deadline of two weeks, and mentions what I'll do next if they don't respond. Keep it under 250 words, factual, no anger."
+    prompt: "I bought [item] from [company], [what went wrong]. Research their warranty and complaints process, then draft a complaint citing their policy: remedy I want [refund/repair], two-week deadline. Factual, under 250 words."
   - n: "3"
     text: "Check the cited policy lines against the company's site (they must actually be there), add your order details, and send it"
 indicesText:
@@ -43,7 +43,9 @@ indicesText:
 ### Using [ChatGPT](https://chatgpt.com/) (or [Google Gemini](https://gemini.google.com/))
 
 1. Have your facts ready before you prompt: order number, date, amount, what went wrong, what you want. The remedy matters most; "I want a refund of $84.99 within two weeks" gets a decision, "this is unacceptable" gets sympathy
-2. Send the prompt above. If your plan includes deep research or agent mode, use it: the difference shows up in the letter citing the company's actual warranty clause instead of generic consumer language
+2. Send this prompt (with deep research or agent mode if your plan has it; the difference shows up in the letter citing the company's actual warranty clause instead of generic consumer language):
+
+> I bought [item] from [company] on [date] and [what went wrong]. I've spent [amount]. Before you write anything: research this company's written warranty, return window, and documented complaints process. Then draft a complaint email that cites their own policy, states the specific remedy I want [refund / repair / replacement], sets a reply deadline of two weeks, and mentions what I'll do next if they don't respond. Keep it under 250 words, factual, no anger.
 3. **Check every citation.** Open the company's policy page and confirm the quoted sentences exist. A letter citing a policy line that isn't there loses its power at the first read
 4. Send it to the right address. Ask the AI where this company documents its formal complaints channel; use that channel, not the general support inbox, for anything over a routine refund
 
