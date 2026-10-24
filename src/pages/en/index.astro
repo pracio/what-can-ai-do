@@ -251,7 +251,7 @@ const cards = tasks
     .prompt-quote:hover { border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: color-mix(in srgb, var(--accent) 12%, var(--quote-bg-hover)); }
     .prompt-quote.copied { border-style: solid; border-color: rgba(74,222,128,.6); background: rgba(74,222,128,.08); }
     /* 卡是速览: 长prompt截断到4行, 全文在详情页(How to节有完整引用块) */
-    .prompt-quote { overflow: hidden; max-height: calc(4 * 1.55em + 14px); mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); }
+    .prompt-quote { overflow: hidden; mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.2em), transparent); }
     
     /* 指数: 压成一行小字 */
     .indices-line {
@@ -338,14 +338,14 @@ const cards = tasks
       .head { flex-shrink: 0; }
       .steps, .indices-line, .open { flex-shrink: 0; }
       /* 矮屏紧凑: 所有元素收进一屏 (实测390x844 Full guide被裁40-70px) */
-      .slide { padding-top: 14px; }
+      .slide { padding-top: 26px; }
       .icon-wrap { width: 46px; height: 46px; }
       .icon-wrap::before { inset: -6px; }
       .title { font-size: clamp(20px, 5.4vw, 26px); }
       .tagline { font-size: 12.5px; margin-top: 3px; }
       .steps { margin-top: 10px; }
       .step { padding: 6px 2px; gap: 10px; }
-      .prompt-quote { margin: 2px 0 6px 30px; padding: 8px 10px; max-height: calc(4 * 1.55em + 16px); }
+      .prompt-quote { margin: 2px 0 6px 30px; padding: 8px 10px; max-height: calc(2.5 * 1.55em + 16px); }
       .indices-line { margin-top: 8px; }
       /* 超窄矮屏再加一档 */
       @media (max-width: 380px) {
@@ -354,7 +354,7 @@ const cards = tasks
         .title { font-size: clamp(18px, 5.4vw, 22px); }
         .steps { margin-top: 8px; }
         .step { padding: 5px 2px; }
-        .prompt-quote { max-height: calc(2.5 * 1.55em + 16px); }
+        .prompt-quote { max-height: calc(2 * 1.55em + 16px); }
 
       }
 
@@ -367,7 +367,6 @@ const cards = tasks
       .tagline { font-size: 12.5px; margin-top: 3px; }
       .steps { margin-top: 10px; }
       .step { padding: 6px 2px; gap: 10px; }
-      .prompt-quote { margin: 2px 0 6px 30px; padding: 8px 10px; max-height: calc(4 * 1.55em + 16px); }
       .indices-line { margin-top: 8px; }
       .title { font-size: clamp(24px, 6.2vw, 34px); }
       .head { gap: 14px; }
@@ -586,9 +585,10 @@ const cards = tasks
       const x = e.touches[0].clientX, y = e.touches[0].clientY;
       if (!axis && (Math.abs(x - startX) > 10 || Math.abs(y - startY) > 10)) {
         axis = Math.abs(x - startX) > Math.abs(y - startY) ? 'x' : 'y';
+        if (axis === 'y') { dragging = false; return; } // 纵向让给卡片内滚动
         deck.classList.add('dragging');
       }
-      if (axis) {
+      if (axis === 'x') {
         dx = x - startX; dy = y - startY;
         const ratio = axis === 'x' ? dx / window.innerWidth : dy / window.innerHeight;
         slides.forEach((s, i) => {
@@ -604,10 +604,9 @@ const cards = tasks
       }
     }, { passive: true });
     deck.addEventListener('touchend', () => {
-      if (axis) {
+      if (axis === 'x') {
         deck.classList.remove('dragging');
-        const d = axis === 'x' ? dx : dy;
-        if (d < -60) go(cur + 1); else if (d > 60) go(cur - 1); else render();
+        if (dx < -60) go(cur + 1); else if (dx > 60) go(cur - 1); else render();
       }
       dragging = false; axis = null; dx = 0; dy = 0;
     });
@@ -643,6 +642,13 @@ const cards = tasks
     let wheelLock = false;
     window.addEventListener('wheel', (e) => {
       if (wheelLock || Math.abs(e.deltaY) < 24) return;
+      // 卡片内容可滚时滚轮先滚卡片: 未到底不翻下页, 未到顶不翻上页
+      const slide = slides[cur];
+      if (slide.scrollHeight > slide.clientHeight + 4) {
+        const atTop = slide.scrollTop <= 1;
+        const atBottom = slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 1;
+        if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+      }
       wheelLock = true; setTimeout(() => wheelLock = false, 600);
       go(cur + (e.deltaY > 0 ? 1 : -1));
     }, { passive: true });
