@@ -3,6 +3,7 @@
 // 加case=加md → sitemap和llms.txt自动带上, 无需手动维护
 import fs from 'node:fs';
 import path from 'node:path';
+import { generateOgCards } from './og-cards.mjs';
 
 const SITE = 'https://what-can-ai-do.pages.dev';
 
@@ -22,7 +23,7 @@ export function seoFiles() {
   return {
     name: 'seo-files',
     hooks: {
-      'astro:build:done': ({ dir, pages }) => {
+      'astro:build:done': async ({ dir, pages }) => {
         if (dir instanceof URL) dir = dir.pathname;
         // ---- sitemap.xml: 扫dist里所有index.html (排除根跳转页) ----
         const urls = [];
@@ -118,6 +119,23 @@ export function seoFiles() {
           }
         }
         fs.writeFileSync(path.join(dir, 'llms-full.txt'), full);
+
+        // ---- og-cards: 每篇详情页专属分享卡 ----
+        try {
+          const ogTasks = [];
+          for (const [d, s] of Object.entries(secs)) {
+            for (const it of s.items) {
+              const fm = parseFrontmatter(fs.readFileSync(path.join('src/content/tasks', d, it.slug + '.md'), 'utf-8')) || {};
+              const colorOf = (v, def) => /^#[0-9a-fA-F]{6}$/.test(v || '') ? v : def;
+              ogTasks.push({ task_id: it.slug, title: it.title, tagline: it.tagline, lang: it.lang,
+                             order: Number(fm.order) || 0,
+                             accent: colorOf(fm.accent, '#8b5cf6'), accent2: colorOf(fm.accent2, '#c4b5fd') });
+            }
+          }
+          await generateOgCards(ogTasks, dir);
+        } catch (e) {
+          console.warn('seo-files: og-cards failed (non-fatal):', e.message);
+        }
 
         // ---- robots.txt ----
         fs.writeFileSync(path.join(dir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n\n# For AI crawlers\n# llms.txt: ${SITE}/llms.txt\n# llms-full.txt (full text): ${SITE}/llms-full.txt\n`);
