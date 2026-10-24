@@ -52,7 +52,6 @@ const cards = tasks
     <meta property="og:description" content="20 個真實情境告訴你免費 AI 能做什麼：修復老照片、讀長文件、輔導孩子功課、識破詐騙。每個案例一條提示詞，複製就能用。" />
     <meta property="og:url" content="https://what-can-ai-do.pages.dev/zh-Hant/" />
     <meta property="og:site_name" content="What Can AI Do?" />
-    <meta name="twitter:card" content="summary" />
   <script is:inline>
     (function () {
       var saved = localStorage.getItem('wcad-theme');
@@ -272,6 +271,7 @@ const cards = tasks
     .open:hover { box-shadow: 0 14px 52px color-mix(in srgb, var(--accent) 65%, transparent); }
     .open:active { transform: scale(0.96); }
     .open:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
     /* 进场 stagger */
     .slide.active .icon-wrap { animation-delay: 0s; }

@@ -52,7 +52,6 @@ const cards = tasks
     <meta property="og:description" content="20 real-life situations where free AI actually helps: restore old photos, digest long documents, tutor your kid, spot scams. One copy-paste prompt per case." />
     <meta property="og:url" content="https://what-can-ai-do.pages.dev/en/" />
     <meta property="og:site_name" content="What Can AI Do?" />
-    <meta name="twitter:card" content="summary" />
   <script is:inline>
     (function () {
       var saved = localStorage.getItem('wcad-theme');
@@ -272,6 +271,7 @@ const cards = tasks
     .open:hover { box-shadow: 0 14px 52px color-mix(in srgb, var(--accent) 65%, transparent); }
     .open:active { transform: scale(0.96); }
     .open:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
     /* 进场 stagger */
     .slide.active .icon-wrap { animation-delay: 0s; }

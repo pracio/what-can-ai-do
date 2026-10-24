@@ -84,7 +84,8 @@ export function seoFiles() {
           }
           secs[d] = { label, items };
         }
-        let out = `# What Can AI Do? — a free, non-commercial manual of 20 real-life AI use cases\n\n`;
+        const total = Object.values(secs).reduce((n, s) => n + s.items.length, 0);
+        let out = `# What Can AI Do? — a free, non-commercial manual of ${total} real-life AI use cases\n\n`;
         out += `Free walkthroughs showing what today's consumer AI can actually do, in three languages (Simplified Chinese, Traditional Chinese for Taiwan, English for the US). Every case: what to ask, a copy-paste prompt, and where to be skeptical.\n\n`;
         out += `Honesty note: every case is marked "verified: pending" until a real person re-tests it on a real phone. We do not claim testing we have not done.\n\n`;
         out += `## Pages\n\n`;
@@ -99,9 +100,28 @@ export function seoFiles() {
         out += `## About\n\n- Home: ${SITE}/zh-Hans/ · ${SITE}/zh-Hant/ · ${SITE}/en/\n- About & submit a case: ${SITE}/zh-Hans/about/\n- Feedback: https://github.com/pracio/what-can-ai-do/issues\n`;
         fs.writeFileSync(path.join(dir, 'llms.txt'), out);
 
+        // ---- llms-full.txt: 全文版, AI爬虫直接读正文 ----
+        const slugOf = (lang, slug) => `/${lang === 'zh-Hans' ? 'zh-Hans' : lang}/tasks/${slug}/`;
+        let full = `# What Can AI Do? — full text (${total} cases, 3 languages)\n\n`;
+        full += `Free, non-commercial manual of real-life AI use cases. Honest about limits; every case pending real-device verification is marked.\n\n`;
+        for (const [d, s] of Object.entries(secs)) {
+          full += `## ${s.label}\n\n`;
+          for (const it of s.items) {
+            const mdPath = path.join('src/content/tasks', d, it.slug + '.md');
+            let body = '';
+            try {
+              body = fs.readFileSync(mdPath, 'utf-8').replace(/^[\s\S]*?\n---\n/, ''); // 剥frontmatter
+              body = body.replace(/^---[\s\S]*?\n---\n/, ''); // 双保险
+            } catch { body = `(see ${SITE}${slugOf(it.lang, it.slug)})`; }
+            const url = SITE + slugOf(it.lang, it.slug);
+            full += `### ${it.title}\n\nURL: ${url}\n\n${body.trim()}\n\n---\n\n`;
+          }
+        }
+        fs.writeFileSync(path.join(dir, 'llms-full.txt'), full);
+
         // ---- robots.txt ----
-        fs.writeFileSync(path.join(dir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
-        console.log(`seo-files: sitemap.xml (${urls.length} urls), llms.txt, robots.txt written`);
+        fs.writeFileSync(path.join(dir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n\n# For AI crawlers\n# llms.txt: ${SITE}/llms.txt\n# llms-full.txt (full text): ${SITE}/llms-full.txt\n`);
+        console.log(`seo-files: sitemap.xml (${urls.length} urls), llms.txt (${total} cases), llms-full.txt, robots.txt written`);
       },
     },
   };
