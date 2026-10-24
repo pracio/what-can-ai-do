@@ -84,6 +84,11 @@ const cards = tasks
     }
 
     .deck { position: fixed; inset: 0; perspective: 1200px; }
+    .deck::after {
+      content: ''; position: fixed; left: 0; right: 0; bottom: 0; height: 88px;
+      background: linear-gradient(to top, var(--bg) 52%, transparent);
+      pointer-events: none; z-index: 9;
+    }
     .slide {
       position: absolute; inset: 0; overflow: hidden;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -285,11 +290,14 @@ const cards = tasks
     @keyframes rise { from { transform: translateY(24px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 
     .topbar {
-      position: fixed; top: calc(18px + env(safe-area-inset-top)); left: 22px; right: 22px;
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: calc(18px + env(safe-area-inset-top)) 22px 40px;
       display: flex; justify-content: space-between; align-items: center; z-index: 10;
+      background: linear-gradient(to bottom, var(--bg) 72%, transparent);
+      pointer-events: none;
     }
-    .brand { font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--ink-55); }
-    .counter { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-55); letter-spacing: .1em; }
+    .brand { font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--ink-55); pointer-events: auto; }
+    .counter { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-55); letter-spacing: .1em; pointer-events: auto; }
     .counter b { color: var(--accent-live, var(--ink)); font-size: 16px; }
     .top-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
     .about-link { font-size: 11px; color: var(--ink-45); text-decoration: none; border: 1px solid var(--glass-border); border-radius: 999px; padding: 2px 10px; transition: color .2s, border-color .2s; }
@@ -328,38 +336,16 @@ const cards = tasks
     }
     .arrow:hover { background: var(--glass-strong); color: var(--ink); }
     .arrow.l { left: 26px; } .arrow.r { right: 26px; }
-    @media (hover: none), (max-width: 720px) { .arrow { display: none; } 
-      /* portrait overflow guard: EN/zh-Hant titles wrap taller than zh-Hans; keep head and
-         the steps card from colliding when content exceeds the slide (large system fonts) */
+    @media (hover: none), (max-width: 720px) { .arrow { display: none; }
+      /* 竖滑翻卡已支持: 卡内可滚, 顶部区放松, 不再强行一屏塞下 */
       .slide { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-      .slide::before { content: ''; margin: auto 0; }      /* top spacer keeps centering when short */
-      .slide::after  { content: ''; margin: auto 0; }      /* bottom spacer balances flex-start */
-      .slide { justify-content: flex-start; }
-      .head { flex-shrink: 0; }
+      .slide::before { content: ''; margin: auto 0; }      /* short卡时保持垂直居中 */
+      .slide::after  { content: ''; margin: auto 0; }
+      .slide { justify-content: flex-start; padding-top: 56px; }
+      .head { flex-shrink: 0; gap: 14px; }
       .steps, .indices-line, .open { flex-shrink: 0; }
-      /* 矮屏紧凑: 所有元素收进一屏 (实测390x844 Full guide被裁40-70px) */
-      .slide { padding-top: 26px; }
-      .icon-wrap { width: 46px; height: 46px; }
-      .icon-wrap::before { inset: -6px; }
-      .title { font-size: clamp(20px, 5.4vw, 26px); }
-      .tagline { font-size: 12.5px; margin-top: 3px; }
-      .steps { margin-top: 10px; }
-      .step { padding: 6px 2px; gap: 10px; }
+      /* prompt块限高渐隐, 全文在详情页 */
       .prompt-quote { margin: 2px 0 6px 30px; padding: 8px 10px; max-height: calc(2.5 * 1.55em + 16px); }
-      .indices-line { margin-top: 8px; }
-      /* 超窄矮屏再加一档 */
-      @media (max-width: 380px) {
-        .slide { padding-top: 10px; }
-        .icon-wrap { width: 38px; height: 38px; flex-shrink: 0; }
-        .title { font-size: clamp(18px, 5.4vw, 22px); }
-        .steps { margin-top: 8px; }
-        .step { padding: 5px 2px; }
-        .prompt-quote { max-height: calc(2 * 1.55em + 16px); }
-
-      }
-
-      .title { font-size: clamp(24px, 6.2vw, 34px); }
-      .head { gap: 14px; }
 }
 
     @media (prefers-reduced-motion: reduce) {
