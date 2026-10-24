@@ -1,5 +1,5 @@
 ---
-import { render } from 'astro:content';
+import { render, getCollection } from 'astro:content';
 import { TOOL_META } from '../icons/tool-meta';
 
 // 多语言详情页模板。i18n 文案集中在 UI 常量里，三语壳各传一份
@@ -16,14 +16,29 @@ export type TaskPageUI = {
   shareOk: string;
   toolsLabel?: string;
   toolsLead?: string;
+  typeChat: string;
+  typeAgent: string;
+  relatedLabel: string;
 };
 
 import { trioSlugs } from '../lib/slug-registry';
 const TRIO_SLUGS = new Set(trioSlugs());
 const { task, ui, prev, next } = Astro.props;
 const { Content } = await render(task);
+
+// related: 同语言池中实际存在的引用才渲染(悬空引用静默跳过)
+const COLLECTION = ui.htmlLang === 'zh-Hant' ? 'tasksZhHant' : ui.htmlLang === 'zh-Hans' ? 'tasksZhHans' : 'tasksEn';
+const pool = await getCollection(COLLECTION);
+const relatedItems = (task.data.related || [])
+  .map(x => String(x).trim()).filter(Boolean)
+  .map(slug => pool.find(t => t.id.replace(/\.md$/, '') === slug))
+  .filter(Boolean);
+
+const accent = task.data.accent && /^#[0-9a-fA-F]{6}$/.test(task.data.accent) ? task.data.accent : '#fbbf24';
+const rgb = [0, 2, 4].map(i => parseInt(accent.slice(1).slice(i, i + 2), 16)).join(',');
 ---
-<html lang={ui.htmlLang}>
+
+<html lang={ui.htmlLang} style={`--case-accent: ${accent}; --case-accent-soft: rgba(${rgb},.12); --case-accent-soft-l: rgba(${rgb},.16);`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,13 +62,13 @@ const { Content } = await render(task);
         --bg: #08080c; --ink: #f2f2f7; --ink-dim: rgba(242,242,247,.65); --ink-faint: rgba(242,242,247,.45);
         --card: rgba(255,255,255,.055); --card-border: rgba(255,255,255,.12);
         --line: rgba(255,255,255,.08); --code-bg: rgba(255,255,255,.09);
-        --accent: #fbbf24; --accent-soft: rgba(251,191,36,.12);
+        --accent: var(--case-accent, #fbbf24); --accent-soft: var(--case-accent-soft, rgba(251,191,36,.12));
       }
       [data-theme="light"] {
         --bg: #f7f7fa; --ink: #1a1a22; --ink-dim: rgba(26,26,34,.68); --ink-faint: rgba(26,26,34,.45);
         --card: rgba(255,255,255,.72); --card-border: rgba(26,26,34,.1);
         --line: rgba(26,26,34,.09); --code-bg: rgba(26,26,34,.06);
-        --accent-soft: rgba(251,191,36,.16);
+        --accent-soft: var(--case-accent-soft-l, rgba(251,191,36,.16));
       }
       * { box-sizing: border-box; }
       button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
@@ -87,6 +102,16 @@ const { Content } = await render(task);
       .troubleshoot[open] .ts-arrow { transform: rotate(180deg); }
       .troubleshoot .ts-lead { margin: 0 14px 8px; font-size: .85em; opacity: .6; }
       .troubleshoot ul { margin: 0; padding: 0 14px 14px 32px; font-size: .88em; line-height: 1.9; opacity: .85; }
+      .domains-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+      .related-nav { margin: 0 0 22px; }
+      .related-lead { margin: 0 0 8px; font-size: .8em; opacity: .55; }
+      .related-grid { display: grid; gap: 8px; }
+      .related-card { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px;
+            border: 1px solid var(--card-border); border-radius: 10px; background: var(--card);
+            text-decoration: none; transition: border-color .15s; }
+      .related-card:hover { border-color: var(--accent); }
+      .related-title { font-weight: 600; font-size: .92em; color: var(--ink); }
+      .related-tag { font-size: .8em; opacity: .6; }
       .pn-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 22px; }
       .pn { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--card-border);
             border-radius: 12px; text-decoration: none; background: var(--card); min-height: 44px; }
@@ -145,6 +170,9 @@ const { Content } = await render(task);
       <p class="tagline">{task.data.tagline}</p>
       <button class="share-btn" id="share-btn" data-ok={ui.shareOk} data-copy-hint={ui.promptCopyHint} data-copy-ok={ui.promptCopyOk}>{ui.shareLabel}</button>
     </div>
+    <div class="type-row">
+      <span class="badge type-badge">{task.data.type === 'agent' ? ui.typeAgent : ui.typeChat}</span>
+    </div>
     {task.data.paths?.length > 0 && (
       <div class="tools-bar">
         <span class="tools-label">{ui.toolsLabel ?? 'Tools'}</span>
@@ -177,6 +205,24 @@ const { Content } = await render(task);
         {ui.troubleshootItems.map((item) => <li set:html={item} />)}
       </ul>
     </details>
+    {task.data.domains?.length > 0 && (
+      <div class="domains-row">
+        {task.data.domains.map((dm) => <span class="badge">{dm}</span>)}
+      </div>
+    )}
+    {relatedItems.length > 0 && (
+      <nav class="related-nav" aria-label={ui.relatedLabel}>
+        <p class="related-lead">{ui.relatedLabel}</p>
+        <div class="related-grid">
+          {relatedItems.map((rt) => (
+            <a class="related-card" href={`./${rt.id.replace(/\.md$/, '')}/`}>
+              <span class="related-title">{rt.data.title}</span>
+              <span class="related-tag">{rt.data.tagline}</span>
+            </a>
+          ))}
+        </div>
+      </nav>
+    )}
     <nav class="pn-nav" aria-label="案例翻页">
       <a class="pn prev" href={`../${prev.id.replace(/\.md$/, '')}/`}>
         <span class="pn-label">{ui.prevLabel}</span>
@@ -198,6 +244,8 @@ const { Content } = await render(task);
       )}
     </p>
     <style>
+      .type-row { margin: 0 0 12px; }
+      .type-badge { display: inline-block; padding: 3px 12px; font-weight: 600; }
       .tools-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
                    margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--card-border);
                    border-radius: 12px; background: var(--card); }
