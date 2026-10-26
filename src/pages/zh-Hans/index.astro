@@ -291,9 +291,9 @@ const cards = tasks
 
     .topbar {
       position: fixed; top: 0; left: 0; right: 0;
-      padding: calc(18px + env(safe-area-inset-top)) 22px 40px;
+      padding: calc(18px + env(safe-area-inset-top)) 22px 28px;
       display: flex; justify-content: space-between; align-items: center; z-index: 10;
-      background: linear-gradient(to bottom, var(--bg) 72%, transparent);
+      background: linear-gradient(to bottom, var(--bg) 58%, transparent);
       pointer-events: none;
     }
     .brand { font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--ink-55); pointer-events: auto; }
@@ -342,7 +342,7 @@ const cards = tasks
       .slide { overflow-y: auto; -webkit-overflow-scrolling: touch; }
       .slide::before { content: ''; margin: auto 0; }
       .slide::after { content: ''; margin: auto 0; }
-      .slide { justify-content: flex-start; padding-top: 76px; }
+      .slide { justify-content: flex-start; padding-top: 100px; }
       .head, .steps, .indices-line, .open { flex-shrink: 0; }
       .head { gap: 14px; }
       /* prompt块限高渐隐, 全文在详情页 */
